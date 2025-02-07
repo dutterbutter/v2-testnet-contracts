@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 # Define the repository URL
 REPO_URL="https://github.com/matter-labs/era-contracts.git"
@@ -37,7 +39,7 @@ mkdir -p "$DEST_DIR/l1-contracts" "$DEST_DIR/l2-contracts" "$DEST_DIR/system-con
 git clone --no-checkout "$REPO_URL" "$TEMP_DIR" >/dev/null 2>&1
 
 # Navigate to the temporary directory and checkout the desired branch/tag/commit
-cd "$TEMP_DIR"
+pushd "$TEMP_DIR"
 git checkout "$BRANCH_TAG_COMMIT" >/dev/null 2>&1
 
 # Capture the commit hash
@@ -76,9 +78,9 @@ preprocess_system_contracts() {
 }
 
 # Preprocess the system contracts
-cd "$TEMP_DIR"/system-contracts
+pushd "$TEMP_DIR"/system-contracts
 preprocess_system_contracts
-cd "$TEMP_DIR"
+popd
 
 # Function to compare directories and sync if differences are found
 check_and_sync() {
@@ -87,38 +89,42 @@ check_and_sync() {
 
     # Use rsync to check for differences (dry run), and fallback to diff if necessary
     if ! rsync -acn --delete "$src_dir/" "$dest_dir/" | grep -q . && diff -qr "$src_dir" "$dest_dir" >/dev/null; then
-        echo "No differences detected between $src_dir and $dest_dir"
-        return 0
+        echo 0
     else
-        echo "Differences detected between $src_dir and $dest_dir"
-        return 1
+        echo 1
     fi
 }
 
 # Check for differences and sync if needed
 DIFF_FOUND=0
-for dir in l1-contracts/contracts l2-contracts/contracts system-contracts/contracts; do
-    check_and_sync "$dir" "$DEST_DIR/${dir%/contracts}"
-    if [ $? -eq 1 ]; then
+for src_dir in l1-contracts/contracts l2-contracts/contracts system-contracts/contracts; do
+    dest_dir="$DEST_DIR/${dir%/contracts}"
+    check_result=$(check_and_sync "$src_dir" "$dest_dir")
+    if [ "$check_result" -eq 1 ]; then
+        echo "Differences detected between $src_dir and $dest_dir"
         DIFF_FOUND=1
+    else
+        echo "No differences detected between $src_dir and $dest_dir"
     fi
 done
 
 # If differences were found, clear destination and sync, then commit the changes
 if [ $DIFF_FOUND -eq 1 ]; then
     for dir in l1-contracts l2-contracts system-contracts; do
-        rm -rf "$DEST_DIR/$dir/*"
+        rm -rf "${DEST_DIR:?}/${dir:?}/*"
         rsync -ac --delete "$dir/contracts/" "$DEST_DIR/$dir/"
     done
 
     # Clean up and commit the changes
-    cd "$(dirname "$DEST_DIR")"
+    pushd "$(dirname "$DEST_DIR")"
     git add contracts
     git commit -m "Updated contracts ($COMMIT_HASH_MESSAGE)" >/dev/null
+    popd
     echo "Contracts fetched, committed, and added to the destination repository from $REPO_URL ($COMMIT_HASH_MESSAGE)"
 else
     echo "No changes detected, contracts are up to date. The script will exit without copying or committing."
 fi
 
-# Clean up the temporary directory
+# Exit and clean up the temporary directory
+popd
 rm -rf "$TEMP_DIR"
