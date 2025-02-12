@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 /// @dev The type id of ZKsync's EIP-712-signed transaction.
 uint8 constant EIP_712_TX_TYPE = 0x71;

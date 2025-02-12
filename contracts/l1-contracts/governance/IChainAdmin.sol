@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.0;
 
 import {Call} from "./Common.sol";
 
@@ -9,7 +9,10 @@ import {Call} from "./Common.sol";
 /// @custom:security-contact security@matterlabs.dev
 interface IChainAdmin {
     /// @notice Emitted when the expected upgrade timestamp for a specific protocol version is set.
-    event UpdateUpgradeTimestamp(uint256 indexed protocolVersion, uint256 upgradeTimestamp);
+    event UpdateUpgradeTimestamp(
+        uint256 indexed protocolVersion,
+        uint256 upgradeTimestamp
+    );
 
     /// @notice Emitted when the call is executed from the contract.
     event CallExecuted(Call call, bool success, bytes returnData);
@@ -25,7 +28,9 @@ interface IChainAdmin {
 
     /// @notice Checks if the restriction is active.
     /// @param _restriction The address of the restriction contract.
-    function isRestrictionActive(address _restriction) external view returns (bool);
+    function isRestrictionActive(
+        address _restriction
+    ) external view returns (bool);
 
     /// @notice Adds a new restriction to the active restrictions set.
     /// @param _restriction The address of the restriction contract.
@@ -43,5 +48,8 @@ interface IChainAdmin {
     /// @dev Note, that this function lacks access control. It is expected that the access control is implemented in a separate restriction contract.
     /// @dev Even though all the validation from external modules is executed via `staticcall`, the function
     /// is marked as `nonReentrant` to prevent reentrancy attacks in case the staticcall restriction is lifted in the future.
-    function multicall(Call[] calldata _calls, bool _requireSuccess) external payable;
+    function multicall(
+        Call[] calldata _calls,
+        bool _requireSuccess
+    ) external payable;
 }

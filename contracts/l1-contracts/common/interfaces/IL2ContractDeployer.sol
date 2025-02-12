@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 /**
  * @author Matter Labs
@@ -22,11 +22,17 @@ interface IL2ContractDeployer {
     }
 
     /// @notice This method is to be used only during an upgrade to set bytecodes on specific addresses.
-    function forceDeployOnAddresses(ForceDeployment[] calldata _deployParams) external;
+    function forceDeployOnAddresses(
+        ForceDeployment[] calldata _deployParams
+    ) external;
 
     /// @notice Deploys a contract with similar address derivation rules to the EVM's `CREATE2` opcode.
     /// @param _salt The create2 salt.
     /// @param _bytecodeHash The correctly formatted hash of the bytecode.
     /// @param _input The constructor calldata.
-    function create2(bytes32 _salt, bytes32 _bytecodeHash, bytes calldata _input) external;
+    function create2(
+        bytes32 _salt,
+        bytes32 _bytecodeHash,
+        bytes calldata _input
+    ) external;
 }

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 import {QueueIsEmpty} from "../../common/L1ContractErrors.sol";
 
@@ -34,12 +34,16 @@ library PriorityQueue {
 
     /// @notice Returns zero if and only if no operations were processed from the queue
     /// @return Index of the oldest priority operation that wasn't processed yet
-    function getFirstUnprocessedPriorityTx(Queue storage _queue) internal view returns (uint256) {
+    function getFirstUnprocessedPriorityTx(
+        Queue storage _queue
+    ) internal view returns (uint256) {
         return _queue.head;
     }
 
     /// @return The total number of priority operations that were added to the priority queue, including all processed ones
-    function getTotalPriorityTxs(Queue storage _queue) internal view returns (uint256) {
+    function getTotalPriorityTxs(
+        Queue storage _queue
+    ) internal view returns (uint256) {
         return _queue.tail;
     }
 
@@ -54,7 +58,10 @@ library PriorityQueue {
     }
 
     /// @notice Add the priority operation to the end of the priority queue
-    function pushBack(Queue storage _queue, PriorityOperation memory _operation) internal {
+    function pushBack(
+        Queue storage _queue,
+        PriorityOperation memory _operation
+    ) internal {
         // Save value into the stack to avoid double reading from the storage
         uint256 tail = _queue.tail;
 
@@ -63,7 +70,9 @@ library PriorityQueue {
     }
 
     /// @return The first unprocessed priority operation from the queue
-    function front(Queue storage _queue) internal view returns (PriorityOperation memory) {
+    function front(
+        Queue storage _queue
+    ) internal view returns (PriorityOperation memory) {
         // priority queue is empty
         if (_queue.isEmpty()) {
             revert QueueIsEmpty();
@@ -74,7 +83,9 @@ library PriorityQueue {
 
     /// @notice Remove the first unprocessed priority operation from the queue
     /// @return priorityOperation that was popped from the priority queue
-    function popFront(Queue storage _queue) internal returns (PriorityOperation memory priorityOperation) {
+    function popFront(
+        Queue storage _queue
+    ) internal returns (PriorityOperation memory priorityOperation) {
         // priority queue is empty
         if (_queue.isEmpty()) {
             revert QueueIsEmpty();

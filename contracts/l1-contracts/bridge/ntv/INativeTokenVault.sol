@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.0;
 
 import {IAssetRouterBase} from "../asset-router/IAssetRouterBase.sol";
 
@@ -9,7 +9,10 @@ import {IAssetRouterBase} from "../asset-router/IAssetRouterBase.sol";
 /// @custom:security-contact security@matterlabs.dev
 /// @notice The NTV is an Asset Handler for the L1AssetRouter to handle native tokens
 interface INativeTokenVault {
-    event BridgedTokenBeaconUpdated(address bridgedTokenBeacon, bytes32 bridgedTokenProxyBytecodeHash);
+    event BridgedTokenBeaconUpdated(
+        address bridgedTokenBeacon,
+        bytes32 bridgedTokenProxyBytecodeHash
+    );
 
     /// @notice The Weth token address
     function WETH_TOKEN() external view returns (address);
@@ -34,7 +37,10 @@ interface INativeTokenVault {
     function ensureTokenIsRegistered(address _nativeToken) external;
 
     /// @notice Used to get the the ERC20 data for a token
-    function getERC20Getters(address _token, uint256 _originChainId) external view returns (bytes memory);
+    function getERC20Getters(
+        address _token,
+        uint256 _originChainId
+    ) external view returns (bytes memory);
 
     /// @notice Used to get the token address of an assetId
     function tokenAddress(bytes32 assetId) external view returns (address);
@@ -43,8 +49,14 @@ interface INativeTokenVault {
     function assetId(address token) external view returns (bytes32);
 
     /// @notice Used to get the expected bridged token address corresponding to its native counterpart
-    function calculateCreate2TokenAddress(uint256 _originChainId, address _originToken) external view returns (address);
+    function calculateCreate2TokenAddress(
+        uint256 _originChainId,
+        address _originToken
+    ) external view returns (address);
 
     /// @notice Tries to register a token from the provided `_burnData` and reverts if it is not possible.
-    function tryRegisterTokenFromBurnData(bytes calldata _burnData, bytes32 _expectedAssetId) external;
+    function tryRegisterTokenFromBurnData(
+        bytes calldata _burnData,
+        bytes32 _expectedAssetId
+    ) external;
 }

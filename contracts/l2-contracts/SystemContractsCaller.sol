@@ -2,7 +2,7 @@
 
 // solhint-disable one-contract-per-file
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 import {MSG_VALUE_SYSTEM_CONTRACT} from "./L2ContractHelper.sol";
 
@@ -41,7 +41,12 @@ library Utils {
 /// @notice The library contains the functions to make system calls.
 /// @dev A more detailed description of the library and its methods can be found in the `system-contracts` repo.
 library SystemContractsCaller {
-    function systemCall(uint32 gasLimit, address to, uint256 value, bytes memory data) internal returns (bool success) {
+    function systemCall(
+        uint32 gasLimit,
+        address to,
+        uint256 value,
+        bytes memory data
+    ) internal returns (bool success) {
         address callAddr = SYSTEM_CALL_CALL_ADDRESS;
 
         uint32 dataStart;
@@ -75,7 +80,15 @@ library SystemContractsCaller {
             uint256 forwardMask = MSG_VALUE_SIMULATOR_IS_SYSTEM_BIT;
 
             assembly {
-                success := call(msgValueSimulator, callAddr, value, to, farCallAbi, forwardMask, 0)
+                success := call(
+                    msgValueSimulator,
+                    callAddr,
+                    value,
+                    to,
+                    farCallAbi,
+                    forwardMask,
+                    0
+                )
             }
         }
     }

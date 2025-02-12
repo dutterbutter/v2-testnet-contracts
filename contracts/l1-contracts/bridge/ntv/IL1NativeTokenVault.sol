@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.0;
 
 import {IL1Nullifier} from "../interfaces/IL1Nullifier.sol";
 import {INativeTokenVault} from "./INativeTokenVault.sol";
@@ -16,7 +16,10 @@ interface IL1NativeTokenVault is INativeTokenVault, IL1AssetDeploymentTracker {
     function L1_NULLIFIER() external view returns (IL1Nullifier);
 
     /// @notice Returns the total number of specific tokens locked for some chain
-    function chainBalance(uint256 _chainId, bytes32 _assetId) external view returns (uint256);
+    function chainBalance(
+        uint256 _chainId,
+        bytes32 _assetId
+    ) external view returns (uint256);
 
     /// @notice Registers ETH token
     function registerEthToken() external;

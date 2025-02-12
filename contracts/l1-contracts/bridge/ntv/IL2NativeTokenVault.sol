@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 import {INativeTokenVault} from "./INativeTokenVault.sol";
 
@@ -21,7 +21,10 @@ interface IL2NativeTokenVault is INativeTokenVault {
         uint256 amount
     );
 
-    event L2TokenBeaconUpdated(address indexed l2TokenBeacon, bytes32 indexed l2TokenProxyBytecodeHash);
+    event L2TokenBeaconUpdated(
+        address indexed l2TokenBeacon,
+        bytes32 indexed l2TokenProxyBytecodeHash
+    );
 
     function l2TokenAddress(address _l1Token) external view returns (address);
 }

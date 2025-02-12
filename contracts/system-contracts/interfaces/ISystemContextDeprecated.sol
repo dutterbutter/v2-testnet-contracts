@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 /**
  * @author Matter Labs
@@ -10,7 +10,12 @@ pragma solidity ^0.8.20;
 interface ISystemContextDeprecated {
     function currentBlockInfo() external view returns (uint256);
 
-    function getBlockNumberAndTimestamp() external view returns (uint256 blockNumber, uint256 blockTimestamp);
+    function getBlockNumberAndTimestamp()
+        external
+        view
+        returns (uint256 blockNumber, uint256 blockTimestamp);
 
-    function blockHash(uint256 _blockNumber) external view returns (bytes32 hash);
+    function blockHash(
+        uint256 _blockNumber
+    ) external view returns (bytes32 hash);
 }

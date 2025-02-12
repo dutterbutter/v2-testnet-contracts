@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.0;
 
 import {NotARestriction} from "../../common/L1ContractErrors.sol";
 import {IRestriction, RESTRICTION_MAGIC} from "./IRestriction.sol";
@@ -15,7 +15,10 @@ library RestrictionValidator {
     /// the interface completely or that it is implemented correctly. It is mainly used to
     /// ensure that invalid restrictions can not be accidentally added.
     function validateRestriction(address _restriction) internal view {
-        if (IRestriction(_restriction).getSupportsRestrictionMagic() != RESTRICTION_MAGIC) {
+        if (
+            IRestriction(_restriction).getSupportsRestrictionMagic() !=
+            RESTRICTION_MAGIC
+        ) {
             revert NotARestriction(_restriction);
         }
     }

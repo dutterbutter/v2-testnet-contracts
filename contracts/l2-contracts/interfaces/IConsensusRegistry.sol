@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.0;
 
 /// @author Matter Labs
 /// @custom:security-contact security@matterlabs.dev
@@ -117,10 +117,23 @@ interface IConsensusRegistry {
     event NodeActivated(address indexed nodeOwner);
     event NodeRemoved(address indexed nodeOwner);
     event NodeDeleted(address indexed nodeOwner);
-    event NodeValidatorWeightChanged(address indexed nodeOwner, uint32 newWeight);
-    event NodeAttesterWeightChanged(address indexed nodeOwner, uint32 newWeight);
-    event NodeValidatorKeyChanged(address indexed nodeOwner, BLS12_381PublicKey newPubKey, BLS12_381Signature newPoP);
-    event NodeAttesterKeyChanged(address indexed nodeOwner, Secp256k1PublicKey newPubKey);
+    event NodeValidatorWeightChanged(
+        address indexed nodeOwner,
+        uint32 newWeight
+    );
+    event NodeAttesterWeightChanged(
+        address indexed nodeOwner,
+        uint32 newWeight
+    );
+    event NodeValidatorKeyChanged(
+        address indexed nodeOwner,
+        BLS12_381PublicKey newPubKey,
+        BLS12_381Signature newPoP
+    );
+    event NodeAttesterKeyChanged(
+        address indexed nodeOwner,
+        Secp256k1PublicKey newPubKey
+    );
     event ValidatorsCommitted(uint32 commit);
     event AttestersCommitted(uint32 commit);
 
@@ -149,13 +162,22 @@ interface IConsensusRegistry {
         BLS12_381Signature calldata _pop
     ) external;
 
-    function changeAttesterKey(address _nodeOwner, Secp256k1PublicKey calldata _pubKey) external;
+    function changeAttesterKey(
+        address _nodeOwner,
+        Secp256k1PublicKey calldata _pubKey
+    ) external;
 
     function commitAttesterCommittee() external;
 
     function commitValidatorCommittee() external;
 
-    function getAttesterCommittee() external view returns (CommitteeAttester[] memory);
+    function getAttesterCommittee()
+        external
+        view
+        returns (CommitteeAttester[] memory);
 
-    function getValidatorCommittee() external view returns (CommitteeValidator[] memory);
+    function getValidatorCommittee()
+        external
+        view
+        returns (CommitteeValidator[] memory);
 }

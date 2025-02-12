@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 /**
  * @author Matter Labs
@@ -12,5 +12,9 @@ pragma solidity ^0.8.20;
 interface IPaymasterFlow {
     function general(bytes calldata input) external;
 
-    function approvalBased(address _token, uint256 _minAllowance, bytes calldata _innerInput) external;
+    function approvalBased(
+        address _token,
+        uint256 _minAllowance,
+        bytes calldata _innerInput
+    ) external;
 }

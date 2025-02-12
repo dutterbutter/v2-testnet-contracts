@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 import {IZKChainBase} from "./IZKChainBase.sol";
 import {L2CanonicalTransaction, L2Log, L2Message, TxStatus, BridgehubL2TransactionRequest} from "../../common/Messaging.sol";
@@ -101,7 +101,10 @@ interface IMailbox is IZKChainBase {
     ) external returns (bytes32 canonicalTxHash);
 
     /// @dev On the Gateway the chain's mailbox receives the tx from the bridgehub.
-    function bridgehubRequestL2TransactionOnGateway(bytes32 _canonicalTxHash, uint64 _expirationTimestamp) external;
+    function bridgehubRequestL2TransactionOnGateway(
+        bytes32 _canonicalTxHash,
+        uint64 _expirationTimestamp
+    ) external;
 
     /// @dev On L1 we have to forward to the Gateway's mailbox which sends to the Bridgehub on the Gw
     /// @param _chainId the chainId of the chain
@@ -174,5 +177,9 @@ interface IMailbox is IZKChainBase {
     /// @param txId Serial number of the priority operation
     /// @param txHash keccak256 hash of encoded transaction representation
     /// @param expirationTimestamp Timestamp up to which priority request should be processed
-    event NewRelayedPriorityTransaction(uint256 txId, bytes32 txHash, uint64 expirationTimestamp);
+    event NewRelayedPriorityTransaction(
+        uint256 txId,
+        bytes32 txHash,
+        uint64 expirationTimestamp
+    );
 }

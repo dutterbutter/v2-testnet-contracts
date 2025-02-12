@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 import {Transaction} from "../libraries/TransactionHelper.sol";
 
-bytes4 constant ACCOUNT_VALIDATION_SUCCESS_MAGIC = IAccount.validateTransaction.selector;
+bytes4 constant ACCOUNT_VALIDATION_SUCCESS_MAGIC = IAccount
+    .validateTransaction
+    .selector;
 
 interface IAccount {
     /// @notice Called by the bootloader to validate that an account agrees to process the transaction
@@ -31,7 +33,9 @@ interface IAccount {
 
     // There is no point in providing possible signed hash in the `executeTransactionFromOutside` method,
     // since it typically should not be trusted.
-    function executeTransactionFromOutside(Transaction calldata _transaction) external payable;
+    function executeTransactionFromOutside(
+        Transaction calldata _transaction
+    ) external payable;
 
     function payForTransaction(
         bytes32 _txHash,

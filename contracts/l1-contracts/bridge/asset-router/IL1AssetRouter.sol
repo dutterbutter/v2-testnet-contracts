@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 import {IL1Nullifier} from "../interfaces/IL1Nullifier.sol";
 import {INativeTokenVault} from "../ntv/INativeTokenVault.sol";
@@ -20,7 +20,11 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
         bytes32 indexed l2DepositTxHash
     );
 
-    event ClaimedFailedDepositAssetRouter(uint256 indexed chainId, bytes32 indexed assetId, bytes assetData);
+    event ClaimedFailedDepositAssetRouter(
+        uint256 indexed chainId,
+        bytes32 indexed assetId,
+        bytes assetData
+    );
 
     event AssetDeploymentTrackerSet(
         bytes32 indexed assetId,
@@ -78,7 +82,10 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
 
     function nativeTokenVault() external view returns (INativeTokenVault);
 
-    function setAssetDeploymentTracker(bytes32 _assetRegistrationData, address _assetDeploymentTracker) external;
+    function setAssetDeploymentTracker(
+        bytes32 _assetRegistrationData,
+        address _assetDeploymentTracker
+    ) external;
 
     function setNativeTokenVault(INativeTokenVault _nativeTokenVault) external;
 
@@ -122,7 +129,11 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
     /// @dev assetId is not the padded address, but the correct encoded id (NTV stores respective format for IDs)
     /// @param _amount The asset amount to be transferred to native token vault.
     /// @param _originalCaller The `msg.sender` address from the external call that initiated current one.
-    function transferFundsToNTV(bytes32 _assetId, uint256 _amount, address _originalCaller) external returns (bool);
+    function transferFundsToNTV(
+        bytes32 _assetId,
+        uint256 _amount,
+        address _originalCaller
+    ) external returns (bool);
 
     /// @notice Finalize the withdrawal and release funds
     /// @param _chainId The chain ID of the transaction to check
@@ -158,7 +169,10 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
         address _originalCaller,
         uint256 _value,
         bytes calldata _data
-    ) external payable returns (L2TransactionRequestTwoBridgesInner memory request);
+    )
+        external
+        payable
+        returns (L2TransactionRequestTwoBridgesInner memory request);
 
     /// @notice Generates a calldata for calling the deposit finalization on the L2 native token contract.
     // / @param _chainId The chain ID of the ZK chain to which deposit.
@@ -191,7 +205,11 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
     /// @param _chainId The chain ID of the ZK chain to which confirm the deposit.
     /// @param _txDataHash The keccak256 hash of 0x01 || abi.encode(bytes32, bytes) to identify deposits.
     /// @param _txHash The hash of the L1->L2 transaction to confirm the deposit.
-    function bridgehubConfirmL2Transaction(uint256 _chainId, bytes32 _txDataHash, bytes32 _txHash) external;
+    function bridgehubConfirmL2Transaction(
+        uint256 _chainId,
+        bytes32 _txDataHash,
+        bytes32 _txHash
+    ) external;
 
     function isWithdrawalFinalized(
         uint256 _chainId,

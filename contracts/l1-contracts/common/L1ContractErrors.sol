@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 // 0x5ecf2d7a
 error AccessToFallbackDenied(address target, address invoker);
@@ -44,7 +44,10 @@ error BatchHashMismatch(bytes32 expected, bytes32 actual);
 // 0x2078a6a0
 error BatchNotExecuted(uint256 batchNumber);
 // 0xbd4455ff
-error BatchNumberMismatch(uint256 expectedBatchNumber, uint256 providedBatchNumber);
+error BatchNumberMismatch(
+    uint256 expectedBatchNumber,
+    uint256 providedBatchNumber
+);
 // 0x6cf12312
 error BridgeHubAlreadyRegistered();
 // 0xdb538614
@@ -120,7 +123,11 @@ error InvalidDelay();
 // 0xc1780bd6
 error InvalidLogSender(address sender, uint256 logKey);
 // 0xd8e9405c
-error InvalidNumberOfBlobs(uint256 expected, uint256 numCommitments, uint256 numHashes);
+error InvalidNumberOfBlobs(
+    uint256 expected,
+    uint256 numCommitments,
+    uint256 numHashes
+);
 // 0x09bde339
 error InvalidProof();
 // 0x5428eae7
@@ -138,7 +145,10 @@ error InvalidUpgradeTxn(UpgradeTxVerifyParam);
 // 0xfb5c22e6
 error L2TimestampTooBig();
 // 0xd2c011d6
-error L2UpgradeNonceNotEqualToNewProtocolVersion(uint256 nonce, uint256 protocolVersion);
+error L2UpgradeNonceNotEqualToNewProtocolVersion(
+    uint256 nonce,
+    uint256 protocolVersion
+);
 // 0x97e1359e
 error L2WithdrawalMessageWrongLength(uint256 messageLen);
 // 0xe37d2c02
@@ -214,7 +224,10 @@ error PriorityOperationsRollingHashMismatch();
 // 0x1a4d284a
 error PriorityTxPubdataExceedsMaxPubDataPerBatch();
 // 0xa461f651
-error ProtocolIdMismatch(uint256 expectedProtocolVersion, uint256 providedProtocolId);
+error ProtocolIdMismatch(
+    uint256 expectedProtocolVersion,
+    uint256 providedProtocolId
+);
 // 0x64f94ec2
 error ProtocolIdNotGreater();
 // 0xd328c12a

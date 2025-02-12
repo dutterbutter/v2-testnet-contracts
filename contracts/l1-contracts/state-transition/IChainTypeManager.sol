@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 import {Diamond} from "./libraries/Diamond.sol";
 import {L2CanonicalTransaction} from "../common/Messaging.sol";
@@ -40,7 +40,10 @@ struct ChainCreationParams {
 
 interface IChainTypeManager {
     /// @dev Emitted when a new ZKChain is added
-    event NewZKChain(uint256 indexed _chainId, address indexed _zkChainContract);
+    event NewZKChain(
+        uint256 indexed _chainId,
+        address indexed _zkChainContract
+    );
 
     /// @dev emitted when an chain registers and a GenesisUpgrade happens
     event GenesisUpgrade(
@@ -51,13 +54,19 @@ interface IChainTypeManager {
 
     /// @notice pendingAdmin is changed
     /// @dev Also emitted when new admin is accepted and in this case, `newPendingAdmin` would be zero address
-    event NewPendingAdmin(address indexed oldPendingAdmin, address indexed newPendingAdmin);
+    event NewPendingAdmin(
+        address indexed oldPendingAdmin,
+        address indexed newPendingAdmin
+    );
 
     /// @notice Admin changed
     event NewAdmin(address indexed oldAdmin, address indexed newAdmin);
 
     /// @notice ValidatorTimelock changed
-    event NewValidatorTimelock(address indexed oldValidatorTimelock, address indexed newValidatorTimelock);
+    event NewValidatorTimelock(
+        address indexed oldValidatorTimelock,
+        address indexed newValidatorTimelock
+    );
 
     /// @notice chain creation parameters changed
     event NewChainCreationParams(
@@ -70,16 +79,28 @@ interface IChainTypeManager {
     );
 
     /// @notice New UpgradeCutHash
-    event NewUpgradeCutHash(uint256 indexed protocolVersion, bytes32 indexed upgradeCutHash);
+    event NewUpgradeCutHash(
+        uint256 indexed protocolVersion,
+        bytes32 indexed upgradeCutHash
+    );
 
     /// @notice New UpgradeCutData
-    event NewUpgradeCutData(uint256 indexed protocolVersion, Diamond.DiamondCutData diamondCutData);
+    event NewUpgradeCutData(
+        uint256 indexed protocolVersion,
+        Diamond.DiamondCutData diamondCutData
+    );
 
     /// @notice New ProtocolVersion
-    event NewProtocolVersion(uint256 indexed oldProtocolVersion, uint256 indexed newProtocolVersion);
+    event NewProtocolVersion(
+        uint256 indexed oldProtocolVersion,
+        uint256 indexed newProtocolVersion
+    );
 
     /// @notice Updated ProtocolVersion deadline
-    event UpdateProtocolVersionDeadline(uint256 indexed protocolVersion, uint256 deadline);
+    event UpdateProtocolVersionDeadline(
+        uint256 indexed protocolVersion,
+        uint256 deadline
+    );
 
     function BRIDGE_HUB() external view returns (address);
 
@@ -99,21 +120,33 @@ interface IChainTypeManager {
 
     function l1GenesisUpgrade() external view returns (address);
 
-    function upgradeCutHash(uint256 _protocolVersion) external view returns (bytes32);
+    function upgradeCutHash(
+        uint256 _protocolVersion
+    ) external view returns (bytes32);
 
     function protocolVersion() external view returns (uint256);
 
-    function protocolVersionDeadline(uint256 _protocolVersion) external view returns (uint256);
+    function protocolVersionDeadline(
+        uint256 _protocolVersion
+    ) external view returns (uint256);
 
-    function protocolVersionIsActive(uint256 _protocolVersion) external view returns (bool);
+    function protocolVersionIsActive(
+        uint256 _protocolVersion
+    ) external view returns (bool);
 
-    function getProtocolVersion(uint256 _chainId) external view returns (uint256);
+    function getProtocolVersion(
+        uint256 _chainId
+    ) external view returns (uint256);
 
-    function initialize(ChainTypeManagerInitializeData calldata _initializeData) external;
+    function initialize(
+        ChainTypeManagerInitializeData calldata _initializeData
+    ) external;
 
     function setValidatorTimelock(address _validatorTimelock) external;
 
-    function setChainCreationParams(ChainCreationParams calldata _chainCreationParams) external;
+    function setChainCreationParams(
+        ChainCreationParams calldata _chainCreationParams
+    ) external;
 
     function getChainAdmin(uint256 _chainId) external view returns (address);
 
@@ -132,23 +165,46 @@ interface IChainTypeManager {
         uint256 _newProtocolVersion
     ) external;
 
-    function setUpgradeDiamondCut(Diamond.DiamondCutData calldata _cutData, uint256 _oldProtocolVersion) external;
+    function setUpgradeDiamondCut(
+        Diamond.DiamondCutData calldata _cutData,
+        uint256 _oldProtocolVersion
+    ) external;
 
-    function executeUpgrade(uint256 _chainId, Diamond.DiamondCutData calldata _diamondCut) external;
+    function executeUpgrade(
+        uint256 _chainId,
+        Diamond.DiamondCutData calldata _diamondCut
+    ) external;
 
-    function setPriorityTxMaxGasLimit(uint256 _chainId, uint256 _maxGasLimit) external;
+    function setPriorityTxMaxGasLimit(
+        uint256 _chainId,
+        uint256 _maxGasLimit
+    ) external;
 
     function freezeChain(uint256 _chainId) external;
 
     function unfreezeChain(uint256 _chainId) external;
 
-    function setTokenMultiplier(uint256 _chainId, uint128 _nominator, uint128 _denominator) external;
+    function setTokenMultiplier(
+        uint256 _chainId,
+        uint128 _nominator,
+        uint128 _denominator
+    ) external;
 
-    function changeFeeParams(uint256 _chainId, FeeParams calldata _newFeeParams) external;
+    function changeFeeParams(
+        uint256 _chainId,
+        FeeParams calldata _newFeeParams
+    ) external;
 
-    function setValidator(uint256 _chainId, address _validator, bool _active) external;
+    function setValidator(
+        uint256 _chainId,
+        address _validator,
+        bool _active
+    ) external;
 
-    function setPorterAvailability(uint256 _chainId, bool _zkPorterIsAvailable) external;
+    function setPorterAvailability(
+        uint256 _chainId,
+        bool _zkPorterIsAvailable
+    ) external;
 
     function upgradeChainFromVersion(
         uint256 _chainId,
@@ -156,14 +212,20 @@ interface IChainTypeManager {
         Diamond.DiamondCutData calldata _diamondCut
     ) external;
 
-    function getSemverProtocolVersion() external view returns (uint32, uint32, uint32);
+    function getSemverProtocolVersion()
+        external
+        view
+        returns (uint32, uint32, uint32);
 
     function forwardedBridgeBurn(
         uint256 _chainId,
         bytes calldata _data
     ) external returns (bytes memory _bridgeMintData);
 
-    function forwardedBridgeMint(uint256 _chainId, bytes calldata _data) external returns (address);
+    function forwardedBridgeMint(
+        uint256 _chainId,
+        bytes calldata _data
+    ) external returns (address);
 
     function forwardedBridgeRecoverFailedTransfer(
         uint256 _chainId,

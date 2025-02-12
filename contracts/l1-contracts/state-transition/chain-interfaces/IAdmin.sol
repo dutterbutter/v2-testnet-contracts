@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 import {IZKChainBase} from "../chain-interfaces/IZKChainBase.sol";
 
@@ -31,14 +31,19 @@ interface IAdmin is IZKChainBase {
 
     /// @notice Change the max L2 gas limit for L1 -> L2 transactions
     /// @param _newPriorityTxMaxGasLimit The maximum number of L2 gas that a user can request for L1 -> L2 transactions
-    function setPriorityTxMaxGasLimit(uint256 _newPriorityTxMaxGasLimit) external;
+    function setPriorityTxMaxGasLimit(
+        uint256 _newPriorityTxMaxGasLimit
+    ) external;
 
     /// @notice Change the fee params for L1->L2 transactions
     /// @param _newFeeParams The new fee params
     function changeFeeParams(FeeParams calldata _newFeeParams) external;
 
     /// @notice Change the token multiplier for L1->L2 transactions
-    function setTokenMultiplier(uint128 _nominator, uint128 _denominator) external;
+    function setTokenMultiplier(
+        uint128 _nominator,
+        uint128 _denominator
+    ) external;
 
     /// @notice Change the pubdata pricing mode before the first batch is processed
     /// @param _pricingMode The new pubdata pricing mode
@@ -50,12 +55,17 @@ interface IAdmin is IZKChainBase {
     /// @notice Perform the upgrade from the current protocol version with the corresponding upgrade data
     /// @param _protocolVersion The current protocol version from which upgrade is executed
     /// @param _cutData The diamond cut parameters that is executed in the upgrade
-    function upgradeChainFromVersion(uint256 _protocolVersion, Diamond.DiamondCutData calldata _cutData) external;
+    function upgradeChainFromVersion(
+        uint256 _protocolVersion,
+        Diamond.DiamondCutData calldata _cutData
+    ) external;
 
     /// @notice Executes a proposed governor upgrade
     /// @dev Only the ChainTypeManager contract can execute the upgrade
     /// @param _diamondCut The diamond cut parameters to be executed
-    function executeUpgrade(Diamond.DiamondCutData calldata _diamondCut) external;
+    function executeUpgrade(
+        Diamond.DiamondCutData calldata _diamondCut
+    ) external;
 
     /// @notice Instantly pause the functionality of all freezable facets & their selectors
     /// @dev Only the governance mechanism may freeze Diamond Proxy
@@ -78,7 +88,10 @@ interface IAdmin is IZKChainBase {
     /// That's why we change those together to prevent admins of chains from shooting themselves in the foot.
     /// @param _l1DAValidator The address of the L1 DA validator
     /// @param _l2DAValidator The address of the L2 DA validator
-    function setDAValidatorPair(address _l1DAValidator, address _l2DAValidator) external;
+    function setDAValidatorPair(
+        address _l1DAValidator,
+        address _l2DAValidator
+    ) external;
 
     /// @notice Makes the chain as permanent rollup.
     /// @dev This is a security feature needed for chains that should be
@@ -91,17 +104,26 @@ interface IAdmin is IZKChainBase {
     event IsPorterAvailableStatusUpdate(bool isPorterAvailable);
 
     /// @notice Validator's status changed
-    event ValidatorStatusUpdate(address indexed validatorAddress, bool isActive);
+    event ValidatorStatusUpdate(
+        address indexed validatorAddress,
+        bool isActive
+    );
 
     /// @notice pendingAdmin is changed
     /// @dev Also emitted when new admin is accepted and in this case, `newPendingAdmin` would be zero address
-    event NewPendingAdmin(address indexed oldPendingAdmin, address indexed newPendingAdmin);
+    event NewPendingAdmin(
+        address indexed oldPendingAdmin,
+        address indexed newPendingAdmin
+    );
 
     /// @notice Admin changed
     event NewAdmin(address indexed oldAdmin, address indexed newAdmin);
 
     /// @notice Priority transaction max L2 gas limit changed
-    event NewPriorityTxMaxGasLimit(uint256 oldPriorityTxMaxGasLimit, uint256 newPriorityTxMaxGasLimit);
+    event NewPriorityTxMaxGasLimit(
+        uint256 oldPriorityTxMaxGasLimit,
+        uint256 newPriorityTxMaxGasLimit
+    );
 
     /// @notice Fee params for L1->L2 transactions changed
     event NewFeeParams(FeeParams oldFeeParams, FeeParams newFeeParams);
@@ -110,7 +132,10 @@ interface IAdmin is IZKChainBase {
     event PubdataPricingModeUpdate(PubdataPricingMode validiumMode);
 
     /// @notice The transaction filterer has been updated
-    event NewTransactionFilterer(address oldTransactionFilterer, address newTransactionFilterer);
+    event NewTransactionFilterer(
+        address oldTransactionFilterer,
+        address newTransactionFilterer
+    );
 
     /// @notice BaseToken multiplier for L1->L2 transactions changed
     event NewBaseTokenMultiplier(
@@ -133,8 +158,14 @@ interface IAdmin is IZKChainBase {
     event Unfreeze();
 
     /// @notice New pair of DA validators set
-    event NewL2DAValidator(address indexed oldL2DAValidator, address indexed newL2DAValidator);
-    event NewL1DAValidator(address indexed oldL1DAValidator, address indexed newL1DAValidator);
+    event NewL2DAValidator(
+        address indexed oldL2DAValidator,
+        address indexed newL2DAValidator
+    );
+    event NewL1DAValidator(
+        address indexed oldL1DAValidator,
+        address indexed newL1DAValidator
+    );
 
     event BridgeMint(address indexed _account, uint256 _amount);
 
@@ -154,7 +185,13 @@ interface IAdmin is IZKChainBase {
     ) external payable;
 
     /// @dev Similar to IL1AssetHandler interface, used to receive chains.
-    function forwardedBridgeMint(bytes calldata _data, bool _contractAlreadyDeployed) external payable;
+    function forwardedBridgeMint(
+        bytes calldata _data,
+        bool _contractAlreadyDeployed
+    ) external payable;
 
-    function prepareChainCommitment() external view returns (ZKChainCommitment memory commitment);
+    function prepareChainCommitment()
+        external
+        view
+        returns (ZKChainCommitment memory commitment);
 }

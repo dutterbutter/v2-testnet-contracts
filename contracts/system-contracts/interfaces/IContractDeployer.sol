@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 /// @notice A struct that describes a forced deployment on an address
 struct ForceDeployment {
@@ -50,9 +50,15 @@ interface IContractDeployer {
         address indexed contractAddress
     );
 
-    event AccountNonceOrderingUpdated(address indexed accountAddress, AccountNonceOrdering nonceOrdering);
+    event AccountNonceOrderingUpdated(
+        address indexed accountAddress,
+        AccountNonceOrdering nonceOrdering
+    );
 
-    event AccountVersionUpdated(address indexed accountAddress, AccountAbstractionVersion aaVersion);
+    event AccountVersionUpdated(
+        address indexed accountAddress,
+        AccountAbstractionVersion aaVersion
+    );
 
     function getNewAddressCreate2(
         address _sender,
@@ -61,7 +67,10 @@ interface IContractDeployer {
         bytes calldata _input
     ) external view returns (address newAddress);
 
-    function getNewAddressCreate(address _sender, uint256 _senderNonce) external pure returns (address newAddress);
+    function getNewAddressCreate(
+        address _sender,
+        uint256 _senderNonce
+    ) external pure returns (address newAddress);
 
     function create2(
         bytes32 _salt,
@@ -95,7 +104,9 @@ interface IContractDeployer {
     ) external payable returns (address newAddress);
 
     /// @notice Returns the information about a certain AA.
-    function getAccountInfo(address _address) external view returns (AccountInfo memory info);
+    function getAccountInfo(
+        address _address
+    ) external view returns (AccountInfo memory info);
 
     /// @notice Can be called by an account to update its account version
     function updateAccountVersion(AccountAbstractionVersion _version) external;
@@ -104,5 +115,7 @@ interface IContractDeployer {
     function updateNonceOrdering(AccountNonceOrdering _nonceOrdering) external;
 
     /// @notice This method is to be used only during an upgrade to set bytecodes on specific addresses.
-    function forceDeployOnAddresses(ForceDeployment[] calldata _deployments) external payable;
+    function forceDeployOnAddresses(
+        ForceDeployment[] calldata _deployments
+    ) external payable;
 }

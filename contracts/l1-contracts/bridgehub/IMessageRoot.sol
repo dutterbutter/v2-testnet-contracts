@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.0;
 
 import {IBridgehub} from "./IBridgehub.sol";
 
@@ -14,5 +14,9 @@ interface IMessageRoot {
 
     function addNewChain(uint256 _chainId) external;
 
-    function addChainBatchRoot(uint256 _chainId, uint256 _batchNumber, bytes32 _chainBatchRoot) external;
+    function addChainBatchRoot(
+        uint256 _chainId,
+        uint256 _batchNumber,
+        bytes32 _chainBatchRoot
+    ) external;
 }

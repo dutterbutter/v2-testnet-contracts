@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 /**
  * @author Matter Labs
@@ -45,19 +45,33 @@ interface ISystemContext {
 
     function getBlockHashEVM(uint256 _block) external view returns (bytes32);
 
-    function getBatchHash(uint256 _batchNumber) external view returns (bytes32 hash);
+    function getBatchHash(
+        uint256 _batchNumber
+    ) external view returns (bytes32 hash);
 
     function getBlockNumber() external view returns (uint128);
 
     function getBlockTimestamp() external view returns (uint128);
 
-    function getBatchNumberAndTimestamp() external view returns (uint128 blockNumber, uint128 blockTimestamp);
+    function getBatchNumberAndTimestamp()
+        external
+        view
+        returns (uint128 blockNumber, uint128 blockTimestamp);
 
-    function getL2BlockNumberAndTimestamp() external view returns (uint128 blockNumber, uint128 blockTimestamp);
+    function getL2BlockNumberAndTimestamp()
+        external
+        view
+        returns (uint128 blockNumber, uint128 blockTimestamp);
 
-    function gasPerPubdataByte() external view returns (uint256 gasPerPubdataByte);
+    function gasPerPubdataByte()
+        external
+        view
+        returns (uint256 gasPerPubdataByte);
 
-    function getCurrentPubdataSpent() external view returns (uint256 currentPubdataSpent);
+    function getCurrentPubdataSpent()
+        external
+        view
+        returns (uint256 currentPubdataSpent);
 
     function setChainId(uint256 _newChainId) external;
 }

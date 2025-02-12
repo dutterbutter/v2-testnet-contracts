@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 /// @dev The formal address of the initial program of the system: the bootloader
 address constant L2_BOOTLOADER_ADDRESS = address(0x8001);
@@ -76,7 +76,11 @@ address constant L2_MESSAGE_ROOT_ADDR = address(0x10005);
 uint160 constant SYSTEM_CONTRACTS_OFFSET = 0x8000; // 2^15
 
 /// @dev the address of the l2 messenger system contract
-IL2Messenger constant L2_MESSENGER = IL2Messenger(address(SYSTEM_CONTRACTS_OFFSET + 0x08));
+IL2Messenger constant L2_MESSENGER = IL2Messenger(
+    address(SYSTEM_CONTRACTS_OFFSET + 0x08)
+);
 
 /// @dev the address of the msg value system contract
-address constant MSG_VALUE_SYSTEM_CONTRACT = address(SYSTEM_CONTRACTS_OFFSET + 0x09);
+address constant MSG_VALUE_SYSTEM_CONTRACT = address(
+    SYSTEM_CONTRACTS_OFFSET + 0x09
+);

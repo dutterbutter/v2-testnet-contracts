@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 // 0xa2ac02a0
 error NotRelayedSender(address msgSender, address settlementLayerRelaySender);
@@ -24,7 +24,10 @@ error CTMNotRegistered();
 error ChainIdNotRegistered();
 
 // 0xb78dbaa7
-error SecondBridgeAddressTooLow(address secondBridgeAddress, address minSecondBridgeAddress);
+error SecondBridgeAddressTooLow(
+    address secondBridgeAddress,
+    address minSecondBridgeAddress
+);
 
 // 0x472477e2
 error NotInGatewayMode();
@@ -60,7 +63,10 @@ error NoEthAllowed();
 error NotOwner(address sender, address owner);
 
 // 0x92626457
-error WrongCounterPart(address addressOnCounterPart, address l2BridgehubAddress);
+error WrongCounterPart(
+    address addressOnCounterPart,
+    address l2BridgehubAddress
+);
 
 // 0xecb34449
 error NotL1(uint256 l1ChainId, uint256 blockChainId);

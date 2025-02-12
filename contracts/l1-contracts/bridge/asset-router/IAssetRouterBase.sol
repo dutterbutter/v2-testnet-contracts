@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.0;
 
 import {IBridgehub} from "../../bridgehub/IBridgehub.sol";
 
@@ -45,9 +45,16 @@ interface IAssetRouterBase {
         address assetDeploymentTracker
     );
 
-    event AssetHandlerRegistered(bytes32 indexed assetId, address indexed _assetHandlerAddress);
+    event AssetHandlerRegistered(
+        bytes32 indexed assetId,
+        address indexed _assetHandlerAddress
+    );
 
-    event DepositFinalizedAssetRouter(uint256 indexed chainId, bytes32 indexed assetId, bytes assetData);
+    event DepositFinalizedAssetRouter(
+        uint256 indexed chainId,
+        bytes32 indexed assetId,
+        bytes assetData
+    );
 
     function BRIDGE_HUB() external view returns (IBridgehub);
 
@@ -58,9 +65,14 @@ interface IAssetRouterBase {
     /// @dev `setAssetHandlerAddressOnCounterpart` should be called on L1 to set asset handlers on L2 chains for a specific asset ID.
     /// @param _assetRegistrationData The asset data which may include the asset address and any additional required data or encodings.
     /// @param _assetHandlerAddress The address of the asset handler to be set for the provided asset.
-    function setAssetHandlerAddressThisChain(bytes32 _assetRegistrationData, address _assetHandlerAddress) external;
+    function setAssetHandlerAddressThisChain(
+        bytes32 _assetRegistrationData,
+        address _assetHandlerAddress
+    ) external;
 
-    function assetHandlerAddress(bytes32 _assetId) external view returns (address);
+    function assetHandlerAddress(
+        bytes32 _assetId
+    ) external view returns (address);
 
     /// @notice Finalize the withdrawal and release funds.
     /// @param _chainId The chain ID of the transaction to check.
@@ -68,5 +80,9 @@ interface IAssetRouterBase {
     /// @param _transferData The position in the L2 logs Merkle tree of the l2Log that was sent with the message.
     /// @dev We have both the legacy finalizeWithdrawal and the new finalizeDeposit functions,
     /// finalizeDeposit uses the new format. On the L2 we have finalizeDeposit with new and old formats both.
-    function finalizeDeposit(uint256 _chainId, bytes32 _assetId, bytes memory _transferData) external payable;
+    function finalizeDeposit(
+        uint256 _chainId,
+        bytes32 _assetId,
+        bytes memory _transferData
+    ) external payable;
 }

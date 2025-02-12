@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 import {IL1Nullifier} from "./IL1Nullifier.sol";
 import {IL1NativeTokenVault} from "../ntv/IL1NativeTokenVault.sol";
@@ -19,11 +19,22 @@ interface IL1ERC20Bridge {
         uint256 amount
     );
 
-    event WithdrawalFinalized(address indexed to, address indexed l1Token, uint256 amount);
+    event WithdrawalFinalized(
+        address indexed to,
+        address indexed l1Token,
+        uint256 amount
+    );
 
-    event ClaimedFailedDeposit(address indexed to, address indexed l1Token, uint256 amount);
+    event ClaimedFailedDeposit(
+        address indexed to,
+        address indexed l1Token,
+        uint256 amount
+    );
 
-    function isWithdrawalFinalized(uint256 _l2BatchNumber, uint256 _l2MessageIndex) external view returns (bool);
+    function isWithdrawalFinalized(
+        uint256 _l2BatchNumber,
+        uint256 _l2MessageIndex
+    ) external view returns (bool);
 
     function deposit(
         address _l2Receiver,
@@ -66,7 +77,10 @@ interface IL1ERC20Bridge {
 
     function L1_ASSET_ROUTER() external view returns (IL1AssetRouter);
 
-    function L1_NATIVE_TOKEN_VAULT() external view returns (IL1NativeTokenVault);
+    function L1_NATIVE_TOKEN_VAULT()
+        external
+        view
+        returns (IL1NativeTokenVault);
 
     function l2TokenBeacon() external view returns (address);
 

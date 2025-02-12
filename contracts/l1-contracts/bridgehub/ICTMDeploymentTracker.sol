@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity ^0.8.0;
 
 import {L2TransactionRequestTwoBridgesInner, IBridgehub} from "./IBridgehub.sol";
 import {IAssetRouterBase} from "../bridge/asset-router/IAssetRouterBase.sol";
@@ -14,7 +14,10 @@ interface ICTMDeploymentTracker is IL1AssetDeploymentTracker {
         address _originalCaller,
         uint256 _l2Value,
         bytes calldata _data
-    ) external payable returns (L2TransactionRequestTwoBridgesInner memory request);
+    )
+        external
+        payable
+        returns (L2TransactionRequestTwoBridgesInner memory request);
 
     function BRIDGE_HUB() external view returns (IBridgehub);
 

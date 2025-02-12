@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 import {UncheckedMath} from "../../common/libraries/UncheckedMath.sol";
 import {MerklePathEmpty, MerklePathOutOfBounds, MerkleIndexOutOfBounds, MerklePathLengthMismatch, MerkleNothingToProve, MerkleIndexOrHeightMismatch} from "../../common/L1ContractErrors.sol";
@@ -100,8 +100,11 @@ library Merkle {
             // start on an odd index (`parity == 1`) or end on an even index (`levelLen % 2 == 1`)
             uint256 nextLevelLen = levelLen / 2 + (parity | (levelLen % 2));
             for (uint256 i; i < nextLevelLen; i = i.uncheckedInc()) {
-                bytes32 lhs = (i == 0 && parity == 1) ? _startPath[level] : itemHashes[2 * i - parity];
-                bytes32 rhs = (i == nextLevelLen - 1 && (levelLen - parity) % 2 == 1)
+                bytes32 lhs = (i == 0 && parity == 1)
+                    ? _startPath[level]
+                    : itemHashes[2 * i - parity];
+                bytes32 rhs = (i == nextLevelLen - 1 &&
+                    (levelLen - parity) % 2 == 1)
                     ? _endPath[level]
                     : itemHashes[2 * i + 1 - parity];
                 itemHashes[i] = efficientHash(lhs, rhs);
@@ -114,7 +117,10 @@ library Merkle {
     }
 
     /// @dev Keccak hash of the concatenation of two 32-byte words
-    function efficientHash(bytes32 _lhs, bytes32 _rhs) internal pure returns (bytes32 result) {
+    function efficientHash(
+        bytes32 _lhs,
+        bytes32 _rhs
+    ) internal pure returns (bytes32 result) {
         assembly {
             mstore(0x00, _lhs)
             mstore(0x20, _rhs)
@@ -122,7 +128,10 @@ library Merkle {
         }
     }
 
-    function _validatePathLengthForSingleProof(uint256 _index, uint256 _pathLength) private pure {
+    function _validatePathLengthForSingleProof(
+        uint256 _index,
+        uint256 _pathLength
+    ) private pure {
         if (_pathLength >= 256) {
             revert MerklePathOutOfBounds();
         }
