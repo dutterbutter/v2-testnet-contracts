@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# WARNING: This script does not automate all of the work. It just fetches new contracts from era-contracts
+# without filtering out non-public files (i.e. those containing contract implementations as opposed to
+# interfaces, events, errors). This works has to be done manually.
+
 set -e
 
 # Define the repository URL
