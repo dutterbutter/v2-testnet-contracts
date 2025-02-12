@@ -1,6 +1,6 @@
 # ZKsync Contracts
 
-# <img src="logo.svg" height="118" alt="ZKsync Logo" />
+# <img src="logo.svg" alt="ZKsync Logo" />
 
 > [!WARNING]
 > This project is provided on the best effort basis and might not accurately reflect contracts that are deployed on any particular ZK chain. Proper source of truth is still [era-contracts](https://github.com/matter-labs/era-contracts).
