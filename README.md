@@ -2,7 +2,14 @@
 
 [![Logo](https://raw.githubusercontent.com/matter-labs/v2-testnet-contracts/beta/logo.svg)](https://zksync.io)
 
-This package contains ZKsync L1, L2 and System Contracts. For more details see the [source repository](https://github.com/matter-labs/era-contracts).
+> [!WARNING]
+> This project is provided on the best effort basis and might not accurately reflect contracts that are deployed on any particular ZK chain. Proper source of truth is still [era-contracts](https://github.com/matter-labs/era-contracts)
+
+This package contains lightweight subset of ZKsync L1, L2 and system contracts that we consider to be publicly facing. For more details see [era-contracts](https://github.com/matter-labs/era-contracts).
+
+
+> [!IMPORTANT]
+> Current contract snapshot was made for protocol version 26 as taken from commit [6badcb8a9b6114c6dd10d3b172a96812250604b0](https://github.com/matter-labs/era-contracts/commit/6badcb8a9b6114c6dd10d3b172a96812250604b0)
 
 ## Installation
 
