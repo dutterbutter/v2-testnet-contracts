@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
-import {SafeCast} from "@openzeppelin/contracts-v4/utils/math/SafeCast.sol";
+import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 import {UncheckedMath} from "../../common/libraries/UncheckedMath.sol";
 import {NoFunctionsForDiamondCut, UndefinedDiamondCutAction, AddressHasNoCode, FacetExists, RemoveFunctionFacetAddressZero, SelectorsMustAllHaveSameFreezability, NonEmptyCalldata, ReplaceFunctionFacetAddressZero, RemoveFunctionFacetAddressNotZero, DelegateCallFailed} from "../../common/L1ContractErrors.sol";
 
@@ -22,7 +22,11 @@ library Diamond {
     bytes32 private constant DIAMOND_STORAGE_POSITION =
         0xc8fcad8db84d3cc18b4c41d551ea0ee66dd599cde068d998e57d5e09332c131b; // keccak256("diamond.standard.diamond.storage") - 1;
 
-    event DiamondCut(FacetCut[] facetCuts, address initAddress, bytes initCalldata);
+    event DiamondCut(
+        FacetCut[] facetCuts,
+        address initAddress,
+        bytes initCalldata
+    );
 
     /// @dev Utility struct that contains associated facet & meta information of selector
     /// @param facetAddress address of the facet which is connected with selector
@@ -86,7 +90,11 @@ library Diamond {
     }
 
     /// @return diamondStorage The pointer to the storage where all specific diamond proxy parameters stored
-    function getDiamondStorage() internal pure returns (DiamondStorage storage diamondStorage) {
+    function getDiamondStorage()
+        internal
+        pure
+        returns (DiamondStorage storage diamondStorage)
+    {
         bytes32 position = DIAMOND_STORAGE_POSITION;
         assembly {
             diamondStorage.slot := position
@@ -127,7 +135,11 @@ library Diamond {
 
     /// @dev Add new functions to the diamond proxy
     /// NOTE: expect but NOT enforce that `_selectors` is NON-EMPTY array
-    function _addFunctions(address _facet, bytes4[] memory _selectors, bool _isFacetFreezable) private {
+    function _addFunctions(
+        address _facet,
+        bytes4[] memory _selectors,
+        bool _isFacetFreezable
+    ) private {
         DiamondStorage storage ds = getDiamondStorage();
 
         // Facet with no code cannot be added.
@@ -154,7 +166,11 @@ library Diamond {
 
     /// @dev Change associated facets to already known function selectors
     /// NOTE: expect but NOT enforce that `_selectors` is NON-EMPTY array
-    function _replaceFunctions(address _facet, bytes4[] memory _selectors, bool _isFacetFreezable) private {
+    function _replaceFunctions(
+        address _facet,
+        bytes4[] memory _selectors,
+        bool _isFacetFreezable
+    ) private {
         DiamondStorage storage ds = getDiamondStorage();
 
         // Facet with no code cannot be added.
@@ -182,7 +198,10 @@ library Diamond {
 
     /// @dev Remove association with function and facet
     /// NOTE: expect but NOT enforce that `_selectors` is NON-EMPTY array
-    function _removeFunctions(address _facet, bytes4[] memory _selectors) private {
+    function _removeFunctions(
+        address _facet,
+        bytes4[] memory _selectors
+    ) private {
         DiamondStorage storage ds = getDiamondStorage();
 
         // facet address must be zero
@@ -211,7 +230,10 @@ library Diamond {
         uint256 selectorsLength = ds.facetToSelectors[_facet].selectors.length;
         // If there are no selectors associated with facet then save facet as new one
         if (selectorsLength == 0) {
-            ds.facetToSelectors[_facet].facetPosition = ds.facets.length.toUint16();
+            ds.facetToSelectors[_facet].facetPosition = ds
+                .facets
+                .length
+                .toUint16();
             ds.facets.push(_facet);
         }
     }
@@ -221,17 +243,25 @@ library Diamond {
     /// - `_facet` is NON-ZERO address
     /// - `_facet` is already stored address in `DiamondStorage.facets`
     /// - `_selector` is NOT associated by another facet
-    function _addOneFunction(address _facet, bytes4 _selector, bool _isSelectorFreezable) private {
+    function _addOneFunction(
+        address _facet,
+        bytes4 _selector,
+        bool _isSelectorFreezable
+    ) private {
         DiamondStorage storage ds = getDiamondStorage();
 
-        uint16 selectorPosition = (ds.facetToSelectors[_facet].selectors.length).toUint16();
+        uint16 selectorPosition = (ds.facetToSelectors[_facet].selectors.length)
+            .toUint16();
 
         // if selectorPosition is nonzero, it means it is not a new facet
         // so the freezability of the first selector must be matched to _isSelectorFreezable
         // so all the selectors in a facet will have the same freezability
         if (selectorPosition != 0) {
             bytes4 selector0 = ds.facetToSelectors[_facet].selectors[0];
-            if (_isSelectorFreezable != ds.selectorToFacet[selector0].isFreezable) {
+            if (
+                _isSelectorFreezable !=
+                ds.selectorToFacet[selector0].isFreezable
+            ) {
                 revert SelectorsMustAllHaveSameFreezability();
             }
         }
@@ -250,15 +280,25 @@ library Diamond {
         DiamondStorage storage ds = getDiamondStorage();
 
         // Get index of `FacetToSelectors.selectors` of the selector and last element of array
-        uint256 selectorPosition = ds.selectorToFacet[_selector].selectorPosition;
-        uint256 lastSelectorPosition = ds.facetToSelectors[_facet].selectors.length - 1;
+        uint256 selectorPosition = ds
+            .selectorToFacet[_selector]
+            .selectorPosition;
+        uint256 lastSelectorPosition = ds
+            .facetToSelectors[_facet]
+            .selectors
+            .length - 1;
 
         // If the selector is not at the end of the array then move the last element to the selector position
         if (selectorPosition != lastSelectorPosition) {
-            bytes4 lastSelector = ds.facetToSelectors[_facet].selectors[lastSelectorPosition];
+            bytes4 lastSelector = ds.facetToSelectors[_facet].selectors[
+                lastSelectorPosition
+            ];
 
-            ds.facetToSelectors[_facet].selectors[selectorPosition] = lastSelector;
-            ds.selectorToFacet[lastSelector].selectorPosition = selectorPosition.toUint16();
+            ds.facetToSelectors[_facet].selectors[
+                selectorPosition
+            ] = lastSelector;
+            ds.selectorToFacet[lastSelector].selectorPosition = selectorPosition
+                .toUint16();
         }
 
         // Remove last element from the selectors array
@@ -287,7 +327,8 @@ library Diamond {
             address lastFacet = ds.facets[lastFacetPosition];
 
             ds.facets[facetPosition] = lastFacet;
-            ds.facetToSelectors[lastFacet].facetPosition = facetPosition.toUint16();
+            ds.facetToSelectors[lastFacet].facetPosition = facetPosition
+                .toUint16();
         }
 
         // Remove last element from the facets array
@@ -296,7 +337,10 @@ library Diamond {
 
     /// @dev Delegates call to the initialization address with provided calldata
     /// @dev Used as a final step of diamond cut to execute the logic of the initialization for changed facets
-    function _initializeDiamondCut(address _init, bytes memory _calldata) private {
+    function _initializeDiamondCut(
+        address _init,
+        bytes memory _calldata
+    ) private {
         if (_init == address(0)) {
             // Non-empty calldata for zero address
             if (_calldata.length != 0) {
@@ -322,7 +366,9 @@ library Diamond {
             if (data.length != 32) {
                 revert DelegateCallFailed(data);
             }
-            if (abi.decode(data, (bytes32)) != DIAMOND_INIT_SUCCESS_RETURN_VALUE) {
+            if (
+                abi.decode(data, (bytes32)) != DIAMOND_INIT_SUCCESS_RETURN_VALUE
+            ) {
                 revert DelegateCallFailed(data);
             }
         }

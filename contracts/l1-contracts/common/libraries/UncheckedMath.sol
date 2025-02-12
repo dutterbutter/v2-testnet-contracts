@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.0;
 
 /**
  * @author Matter Labs
@@ -14,7 +14,10 @@ library UncheckedMath {
         }
     }
 
-    function uncheckedAdd(uint256 _lhs, uint256 _rhs) internal pure returns (uint256) {
+    function uncheckedAdd(
+        uint256 _lhs,
+        uint256 _rhs
+    ) internal pure returns (uint256) {
         unchecked {
             return _lhs + _rhs;
         }
