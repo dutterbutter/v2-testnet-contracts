@@ -1,3 +1,0 @@
-OpenZeppelin/openzeppelin-contracts-5.2.0/=dependencies/OpenZeppelin-openzeppelin-contracts-5.2.0/
-forge-std-1.9.6/=dependencies/forge-std-1.9.6/
-forge-zksync-std-0.0.1/=dependencies/forge-zksync-std-0.0.1/
