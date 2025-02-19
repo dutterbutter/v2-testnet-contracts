@@ -7,3 +7,7 @@ node_modules
 # Foundry
 /out
 /cache_forge
+
+
+# Soldeer
+/dependencies
