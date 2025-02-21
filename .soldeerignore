@@ -1,0 +1,23 @@
+# .soldeerignore
+
+# Node-based / Hardhat files
+node_modules/
+package-lock.json
+yarn.lock
+hardhat.config.js
+package.json
+
+# Foundry artifacts
+out/
+zkout/
+cache_forge/
+
+# Dotfiles
+.*  
+.DS_Store
+
+# Other
+.github/
+.scripts/
+logo.svg
+LICENSE-MIT

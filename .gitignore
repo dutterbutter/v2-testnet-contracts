@@ -8,3 +8,7 @@ node_modules
 /out
 /zkout
 /cache_forge
+
+
+# Soldeer
+/dependencies
