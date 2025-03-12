@@ -6,4 +6,5 @@ node_modules
 
 # Foundry
 /out
+/zkout
 /cache_forge
