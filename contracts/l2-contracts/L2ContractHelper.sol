@@ -61,12 +61,10 @@ interface IContractDeployer {
     /// @param _salt a unique value to create the deterministic address of the new contract
     /// @param _input the calldata to be sent to the constructor of the new contract
     /// @return newAddress The derived address of the account.
-    function getNewAddressCreate2(
-        address _sender,
-        bytes32 _bytecodeHash,
-        bytes32 _salt,
-        bytes calldata _input
-    ) external view returns (address newAddress);
+    function getNewAddressCreate2(address _sender, bytes32 _bytecodeHash, bytes32 _salt, bytes calldata _input)
+        external
+        view
+        returns (address newAddress);
 }
 
 /**
@@ -132,9 +130,8 @@ IBaseToken constant L2_BASE_TOKEN_ADDRESS = IBaseToken(address(SYSTEM_CONTRACTS_
 
 ICompressor constant COMPRESSOR_CONTRACT = ICompressor(address(SYSTEM_CONTRACTS_OFFSET + 0x0e));
 
-IPubdataChunkPublisher constant PUBDATA_CHUNK_PUBLISHER = IPubdataChunkPublisher(
-    address(SYSTEM_CONTRACTS_OFFSET + 0x11)
-);
+IPubdataChunkPublisher constant PUBDATA_CHUNK_PUBLISHER =
+    IPubdataChunkPublisher(address(SYSTEM_CONTRACTS_OFFSET + 0x11));
 
 /**
  * @author Matter Labs
@@ -159,12 +156,11 @@ library L2ContractHelper {
     /// @param _constructorInputHash The keccak256 hash of the constructor input data.
     /// @return The create2 address of the contract.
     /// NOTE: L2 create2 derivation is different from L1 derivation!
-    function computeCreate2Address(
-        address _sender,
-        bytes32 _salt,
-        bytes32 _bytecodeHash,
-        bytes32 _constructorInputHash
-    ) internal pure returns (address) {
+    function computeCreate2Address(address _sender, bytes32 _salt, bytes32 _bytecodeHash, bytes32 _constructorInputHash)
+        internal
+        pure
+        returns (address)
+    {
         bytes32 senderBytes = bytes32(uint256(uint160(_sender)));
         bytes32 data = keccak256(
             // solhint-disable-next-line func-named-parameters
@@ -197,8 +193,7 @@ library L2ContractHelper {
             revert MalformedBytecode(BytecodeError.WordsMustBeOdd);
         }
         hashedBytecode =
-            EfficientCall.sha(_bytecode) &
-            0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
+            EfficientCall.sha(_bytecode) & 0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
         // Setting the version of the hash
         hashedBytecode = (hashedBytecode | bytes32(uint256(1 << 248)));
         // Setting the length
