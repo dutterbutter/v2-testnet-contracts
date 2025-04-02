@@ -14,10 +14,7 @@ library UncheckedMath {
         }
     }
 
-    function uncheckedAdd(
-        uint256 _lhs,
-        uint256 _rhs
-    ) internal pure returns (uint256) {
+    function uncheckedAdd(uint256 _lhs, uint256 _rhs) internal pure returns (uint256) {
         unchecked {
             return _lhs + _rhs;
         }

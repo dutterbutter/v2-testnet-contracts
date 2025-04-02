@@ -16,10 +16,9 @@ uint8 constant MAX_ENUMERATION_INDEX_SIZE = 8;
  * the compression of the state diffs and bytecodes.
  */
 interface ICompressor {
-    function publishCompressedBytecode(
-        bytes calldata _bytecode,
-        bytes calldata _rawCompressedData
-    ) external returns (bytes32 bytecodeHash);
+    function publishCompressedBytecode(bytes calldata _bytecode, bytes calldata _rawCompressedData)
+        external
+        returns (bytes32 bytecodeHash);
 
     function verifyCompressedStateDiffs(
         uint256 _numberOfStateDiffs,

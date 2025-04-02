@@ -38,14 +38,9 @@ interface IGovernance {
 
     function isOperationDone(bytes32 _id) external view returns (bool);
 
-    function getOperationState(
-        bytes32 _id
-    ) external view returns (OperationState);
+    function getOperationState(bytes32 _id) external view returns (OperationState);
 
-    function scheduleTransparent(
-        Operation calldata _operation,
-        uint256 _delay
-    ) external;
+    function scheduleTransparent(Operation calldata _operation, uint256 _delay) external;
 
     function scheduleShadow(bytes32 _id, uint256 _delay) external;
 
@@ -55,20 +50,14 @@ interface IGovernance {
 
     function executeInstant(Operation calldata _operation) external payable;
 
-    function hashOperation(
-        Operation calldata _operation
-    ) external pure returns (bytes32);
+    function hashOperation(Operation calldata _operation) external pure returns (bytes32);
 
     function updateDelay(uint256 _newDelay) external;
 
     function updateSecurityCouncil(address _newSecurityCouncil) external;
 
     /// @notice Emitted when transparent operation is scheduled.
-    event TransparentOperationScheduled(
-        bytes32 indexed _id,
-        uint256 delay,
-        Operation _operation
-    );
+    event TransparentOperationScheduled(bytes32 indexed _id, uint256 delay, Operation _operation);
 
     /// @notice Emitted when shadow operation is scheduled.
     event ShadowOperationScheduled(bytes32 indexed _id, uint256 delay);
@@ -77,10 +66,7 @@ interface IGovernance {
     event OperationExecuted(bytes32 indexed _id);
 
     /// @notice Emitted when the security council address is changed.
-    event ChangeSecurityCouncil(
-        address _securityCouncilBefore,
-        address _securityCouncilAfter
-    );
+    event ChangeSecurityCouncil(address _securityCouncilBefore, address _securityCouncilAfter);
 
     /// @notice Emitted when the minimum delay for future operations is modified.
     event ChangeMinDelay(uint256 _delayBefore, uint256 _delayAfter);

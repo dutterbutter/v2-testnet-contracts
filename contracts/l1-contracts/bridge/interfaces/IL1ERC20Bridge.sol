@@ -12,29 +12,14 @@ import {IL1AssetRouter} from "../asset-router/IL1AssetRouter.sol";
 /// @notice Legacy Bridge interface before ZK chain migration, used for backward compatibility with ZKsync Era
 interface IL1ERC20Bridge {
     event DepositInitiated(
-        bytes32 indexed l2DepositTxHash,
-        address indexed from,
-        address indexed to,
-        address l1Token,
-        uint256 amount
+        bytes32 indexed l2DepositTxHash, address indexed from, address indexed to, address l1Token, uint256 amount
     );
 
-    event WithdrawalFinalized(
-        address indexed to,
-        address indexed l1Token,
-        uint256 amount
-    );
+    event WithdrawalFinalized(address indexed to, address indexed l1Token, uint256 amount);
 
-    event ClaimedFailedDeposit(
-        address indexed to,
-        address indexed l1Token,
-        uint256 amount
-    );
+    event ClaimedFailedDeposit(address indexed to, address indexed l1Token, uint256 amount);
 
-    function isWithdrawalFinalized(
-        uint256 _l2BatchNumber,
-        uint256 _l2MessageIndex
-    ) external view returns (bool);
+    function isWithdrawalFinalized(uint256 _l2BatchNumber, uint256 _l2MessageIndex) external view returns (bool);
 
     function deposit(
         address _l2Receiver,
@@ -77,18 +62,14 @@ interface IL1ERC20Bridge {
 
     function L1_ASSET_ROUTER() external view returns (IL1AssetRouter);
 
-    function L1_NATIVE_TOKEN_VAULT()
-        external
-        view
-        returns (IL1NativeTokenVault);
+    function L1_NATIVE_TOKEN_VAULT() external view returns (IL1NativeTokenVault);
 
     function l2TokenBeacon() external view returns (address);
 
     function l2Bridge() external view returns (address);
 
-    function depositAmount(
-        address _account,
-        address _l1Token,
-        bytes32 _depositL2TxHash
-    ) external view returns (uint256 amount);
+    function depositAmount(address _account, address _l1Token, bytes32 _depositL2TxHash)
+        external
+        view
+        returns (uint256 amount);
 }

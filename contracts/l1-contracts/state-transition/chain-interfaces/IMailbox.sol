@@ -3,7 +3,13 @@
 pragma solidity ^0.8.0;
 
 import {IZKChainBase} from "./IZKChainBase.sol";
-import {L2CanonicalTransaction, L2Log, L2Message, TxStatus, BridgehubL2TransactionRequest} from "../../common/Messaging.sol";
+import {
+    L2CanonicalTransaction,
+    L2Log,
+    L2Message,
+    TxStatus,
+    BridgehubL2TransactionRequest
+} from "../../common/Messaging.sol";
 
 /// @title The interface of the ZKsync Mailbox contract that provides interfaces for L1 <-> L2 interaction.
 /// @author Matter Labs
@@ -28,12 +34,10 @@ interface IMailbox is IZKChainBase {
     /// @param _log Information about the sent log
     /// @param _proof Merkle proof for inclusion of the L2 log
     /// @return Whether the proof is correct and L2 log is included in batch
-    function proveL2LogInclusion(
-        uint256 _batchNumber,
-        uint256 _index,
-        L2Log memory _log,
-        bytes32[] calldata _proof
-    ) external view returns (bool);
+    function proveL2LogInclusion(uint256 _batchNumber, uint256 _index, L2Log memory _log, bytes32[] calldata _proof)
+        external
+        view
+        returns (bool);
 
     /// @notice Prove that the L1 -> L2 transaction was processed with the specified status.
     /// @param _l2TxHash The L2 canonical transaction hash
@@ -96,15 +100,20 @@ interface IMailbox is IZKChainBase {
     ) external payable returns (bytes32 canonicalTxHash);
 
     /// @notice when requesting transactions through the bridgehub
-    function bridgehubRequestL2Transaction(
-        BridgehubL2TransactionRequest calldata _request
-    ) external returns (bytes32 canonicalTxHash);
+    function bridgehubRequestL2Transaction(BridgehubL2TransactionRequest calldata _request)
+        external
+        returns (bytes32 canonicalTxHash);
 
     /// @dev On the Gateway the chain's mailbox receives the tx from the bridgehub.
-    function bridgehubRequestL2TransactionOnGateway(
-        bytes32 _canonicalTxHash,
-        uint64 _expirationTimestamp
-    ) external;
+    function bridgehubRequestL2TransactionOnGateway(bytes32 _canonicalTxHash, uint64 _expirationTimestamp) external;
+
+    /// @notice Request execution of service L2 transaction from L1.
+    /// @dev Used for chain configuration. Can be called only by DiamondProxy itself.
+    /// @param _contractL2 The L2 receiver address
+    /// @param _l2Calldata The input of the L2 transaction
+    function requestL2ServiceTransaction(address _contractL2, bytes calldata _l2Calldata)
+        external
+        returns (bytes32 canonicalTxHash);
 
     /// @dev On L1 we have to forward to the Gateway's mailbox which sends to the Bridgehub on the Gw
     /// @param _chainId the chainId of the chain
@@ -121,13 +130,16 @@ interface IMailbox is IZKChainBase {
     /// @param _l2GasLimit Maximum amount of L2 gas that transaction can consume during execution on L2
     /// @param _l2GasPerPubdataByteLimit The maximum amount of L2 gas that the operator may charge the user for a single byte of pubdata.
     /// @return The estimated ETH spent on L2 gas for the transaction
-    function l2TransactionBaseCost(
-        uint256 _gasPrice,
-        uint256 _l2GasLimit,
-        uint256 _l2GasPerPubdataByteLimit
-    ) external view returns (uint256);
+    function l2TransactionBaseCost(uint256 _gasPrice, uint256 _l2GasLimit, uint256 _l2GasPerPubdataByteLimit)
+        external
+        view
+        returns (uint256);
 
-    /// Proves that a certain leaf was included as part of the log merkle tree.
+    /// @dev Proves that a certain leaf was included as part of the log merkle tree.
+    /// @dev Warning: this function does not enforce any additional checks on the structure
+    /// of the leaf. This means that it can accept intermediate nodes of the Merkle tree as a `_leaf` as
+    /// well as the default "empty" leaves. It is the responsibility of the caller to ensure that the
+    /// `_leaf` is a hash of a valid leaf.
     function proveL2LeafInclusion(
         uint256 _batchNumber,
         uint256 _batchRootMask,
@@ -177,9 +189,5 @@ interface IMailbox is IZKChainBase {
     /// @param txId Serial number of the priority operation
     /// @param txHash keccak256 hash of encoded transaction representation
     /// @param expirationTimestamp Timestamp up to which priority request should be processed
-    event NewRelayedPriorityTransaction(
-        uint256 txId,
-        bytes32 txHash,
-        uint64 expirationTimestamp
-    );
+    event NewRelayedPriorityTransaction(uint256 txId, bytes32 txHash, uint64 expirationTimestamp);
 }

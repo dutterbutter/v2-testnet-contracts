@@ -9,9 +9,7 @@ enum ExecutionResult {
     Success
 }
 
-bytes4 constant PAYMASTER_VALIDATION_SUCCESS_MAGIC = IPaymaster
-    .validateAndPayForPaymasterTransaction
-    .selector;
+bytes4 constant PAYMASTER_VALIDATION_SUCCESS_MAGIC = IPaymaster.validateAndPayForPaymasterTransaction.selector;
 
 interface IPaymaster {
     /// @dev Called by the bootloader to verify that the paymaster agrees to pay for the

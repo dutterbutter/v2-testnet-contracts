@@ -3,7 +3,14 @@
 pragma solidity ^0.8.0;
 
 import {UncheckedMath} from "../../common/libraries/UncheckedMath.sol";
-import {MerklePathEmpty, MerklePathOutOfBounds, MerkleIndexOutOfBounds, MerklePathLengthMismatch, MerkleNothingToProve, MerkleIndexOrHeightMismatch} from "../../common/L1ContractErrors.sol";
+import {
+    MerklePathEmpty,
+    MerklePathOutOfBounds,
+    MerkleIndexOutOfBounds,
+    MerklePathLengthMismatch,
+    MerkleNothingToProve,
+    MerkleIndexOrHeightMismatch
+} from "../../common/L1ContractErrors.sol";
 
 /// @author Matter Labs
 /// @custom:security-contact security@matterlabs.dev
@@ -17,19 +24,18 @@ library Merkle {
     /// @param _index Leaf index in the tree
     /// @param _itemHash Hash of leaf content
     /// @return The Merkle root
-    function calculateRoot(
-        bytes32[] calldata _path,
-        uint256 _index,
-        bytes32 _itemHash
-    ) internal pure returns (bytes32) {
+    function calculateRoot(bytes32[] calldata _path, uint256 _index, bytes32 _itemHash)
+        internal
+        pure
+        returns (bytes32)
+    {
         uint256 pathLength = _path.length;
         _validatePathLengthForSingleProof(_index, pathLength);
 
         bytes32 currentHash = _itemHash;
         for (uint256 i; i < pathLength; i = i.uncheckedInc()) {
-            currentHash = (_index % 2 == 0)
-                ? efficientHash(currentHash, _path[i])
-                : efficientHash(_path[i], currentHash);
+            currentHash =
+                (_index % 2 == 0) ? efficientHash(currentHash, _path[i]) : efficientHash(_path[i], currentHash);
             _index /= 2;
         }
 
@@ -37,24 +43,24 @@ library Merkle {
     }
 
     /// @dev Calculate Merkle root by the provided Merkle proof.
-    /// NOTE: When using this function, check that the _path length is equal to the tree height to prevent shorter/longer paths attack
+    /// @dev NOTE: When using this function, check that the _path length is appropriate to prevent shorter/longer paths attack
     /// @param _path Merkle path from the leaf to the root
-    /// @param _index Leaf index in the tree
+    /// @param _index Leaf index in the tree.
+    /// @dev NOTE the tree can be joined. In this case the second tree's leaves indexes increase by the number of leaves in the first tree.
     /// @param _itemHash Hash of leaf content
     /// @return The Merkle root
-    function calculateRootMemory(
-        bytes32[] memory _path,
-        uint256 _index,
-        bytes32 _itemHash
-    ) internal pure returns (bytes32) {
+    function calculateRootMemory(bytes32[] memory _path, uint256 _index, bytes32 _itemHash)
+        internal
+        pure
+        returns (bytes32)
+    {
         uint256 pathLength = _path.length;
         _validatePathLengthForSingleProof(_index, pathLength);
 
         bytes32 currentHash = _itemHash;
         for (uint256 i; i < pathLength; i = i.uncheckedInc()) {
-            currentHash = (_index % 2 == 0)
-                ? efficientHash(currentHash, _path[i])
-                : efficientHash(_path[i], currentHash);
+            currentHash =
+                (_index % 2 == 0) ? efficientHash(currentHash, _path[i]) : efficientHash(_path[i], currentHash);
             _index /= 2;
         }
 
@@ -100,11 +106,8 @@ library Merkle {
             // start on an odd index (`parity == 1`) or end on an even index (`levelLen % 2 == 1`)
             uint256 nextLevelLen = levelLen / 2 + (parity | (levelLen % 2));
             for (uint256 i; i < nextLevelLen; i = i.uncheckedInc()) {
-                bytes32 lhs = (i == 0 && parity == 1)
-                    ? _startPath[level]
-                    : itemHashes[2 * i - parity];
-                bytes32 rhs = (i == nextLevelLen - 1 &&
-                    (levelLen - parity) % 2 == 1)
+                bytes32 lhs = (i == 0 && parity == 1) ? _startPath[level] : itemHashes[2 * i - parity];
+                bytes32 rhs = (i == nextLevelLen - 1 && (levelLen - parity) % 2 == 1)
                     ? _endPath[level]
                     : itemHashes[2 * i + 1 - parity];
                 itemHashes[i] = efficientHash(lhs, rhs);
@@ -117,10 +120,7 @@ library Merkle {
     }
 
     /// @dev Keccak hash of the concatenation of two 32-byte words
-    function efficientHash(
-        bytes32 _lhs,
-        bytes32 _rhs
-    ) internal pure returns (bytes32 result) {
+    function efficientHash(bytes32 _lhs, bytes32 _rhs) internal pure returns (bytes32 result) {
         assembly {
             mstore(0x00, _lhs)
             mstore(0x20, _rhs)
@@ -128,10 +128,7 @@ library Merkle {
         }
     }
 
-    function _validatePathLengthForSingleProof(
-        uint256 _index,
-        uint256 _pathLength
-    ) private pure {
+    function _validatePathLengthForSingleProof(uint256 _index, uint256 _pathLength) private pure {
         if (_pathLength >= 256) {
             revert MerklePathOutOfBounds();
         }

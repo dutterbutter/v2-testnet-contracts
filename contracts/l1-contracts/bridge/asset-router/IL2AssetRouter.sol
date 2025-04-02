@@ -8,25 +8,14 @@ import {IAssetRouterBase} from "./IAssetRouterBase.sol";
 /// @custom:security-contact security@matterlabs.dev
 interface IL2AssetRouter is IAssetRouterBase {
     event WithdrawalInitiatedAssetRouter(
-        uint256 chainId,
-        address indexed l2Sender,
-        bytes32 indexed assetId,
-        bytes assetData
+        uint256 chainId, address indexed l2Sender, bytes32 indexed assetId, bytes assetData
     );
 
-    function withdraw(
-        bytes32 _assetId,
-        bytes calldata _transferData
-    ) external returns (bytes32);
+    function withdraw(bytes32 _assetId, bytes calldata _transferData) external returns (bytes32);
 
     function L1_ASSET_ROUTER() external view returns (address);
 
-    function withdrawLegacyBridge(
-        address _l1Receiver,
-        address _l2Token,
-        uint256 _amount,
-        address _sender
-    ) external;
+    function withdrawLegacyBridge(address _l1Receiver, address _l2Token, uint256 _amount, address _sender) external;
 
     function finalizeDepositLegacyBridge(
         address _l1Sender,
@@ -38,11 +27,7 @@ interface IL2AssetRouter is IAssetRouterBase {
 
     /// @dev Used to set the assetHandlerAddress for a given assetId.
     /// @dev Will be used by ZK Gateway
-    function setAssetHandlerAddress(
-        uint256 _originChainId,
-        bytes32 _assetId,
-        address _assetHandlerAddress
-    ) external;
+    function setAssetHandlerAddress(uint256 _originChainId, bytes32 _assetId, address _assetHandlerAddress) external;
 
     /// @notice Function that allows native token vault to register itself as the asset handler for
     /// a legacy asset.
