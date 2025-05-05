@@ -40,11 +40,7 @@ uint256 constant STATE_DIFF_COMPRESSION_VERSION_NUMBER = 1;
 interface IL1Messenger {
     // Possibly in the future we will be able to track the messages sent to L1 with
     // some hooks in the VM. For now, it is much easier to track them with L2 events.
-    event L1MessageSent(
-        address indexed _sender,
-        bytes32 indexed _hash,
-        bytes _message
-    );
+    event L1MessageSent(address indexed _sender, bytes32 indexed _hash, bytes _message);
 
     event L2ToL1LogSent(L2ToL1Log _l2log);
 
@@ -52,11 +48,9 @@ interface IL1Messenger {
 
     function sendToL1(bytes calldata _message) external returns (bytes32);
 
-    function sendL2ToL1Log(
-        bool _isService,
-        bytes32 _key,
-        bytes32 _value
-    ) external returns (uint256 logIdInMerkleTree);
+    function sendL2ToL1Log(bool _isService, bytes32 _key, bytes32 _value)
+        external
+        returns (uint256 logIdInMerkleTree);
 
     // This function is expected to be called only by the KnownCodesStorage system contract
     function requestBytecodeL1Publication(bytes32 _bytecodeHash) external;

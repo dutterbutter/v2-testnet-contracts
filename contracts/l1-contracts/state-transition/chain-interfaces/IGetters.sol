@@ -64,7 +64,7 @@ interface IGetters is IZKChainBase {
     function getPriorityTreeRoot() external view returns (bytes32);
 
     /// @return Whether the priority queue is active, i.e. whether new priority operations are appended to it.
-    /// Once the chain processes all the transaction that were present in the priority queue, all the L1->L2 related
+    /// Once the chain processes all the transactions that were present in the priority queue, all the L1->L2 related
     /// operations will start to get done using the priority tree.
     function isPriorityQueueActive() external view returns (bool);
 
@@ -82,22 +82,21 @@ interface IGetters is IZKChainBase {
     function isValidator(address _address) external view returns (bool);
 
     /// @return merkleRoot Merkle root of the tree with L2 logs for the selected batch
-    function l2LogsRootHash(
-        uint256 _batchNumber
-    ) external view returns (bytes32 merkleRoot);
+    function l2LogsRootHash(uint256 _batchNumber) external view returns (bytes32 merkleRoot);
 
     /// @notice For unfinalized (non executed) batches may change
     /// @dev returns zero for non-committed batches
     /// @return The hash of committed L2 batch.
-    function storedBatchHash(
-        uint256 _batchNumber
-    ) external view returns (bytes32);
+    function storedBatchHash(uint256 _batchNumber) external view returns (bytes32);
 
     /// @return Bytecode hash of bootloader program.
     function getL2BootloaderBytecodeHash() external view returns (bytes32);
 
     /// @return Bytecode hash of default account (bytecode for EOA).
     function getL2DefaultAccountBytecodeHash() external view returns (bytes32);
+
+    /// @return Bytecode hash of EVM emulator.
+    function getL2EvmEmulatorBytecodeHash() external view returns (bytes32);
 
     /// @return Verifier parameters.
     /// @dev This function is deprecated and will soon be removed.
@@ -110,26 +109,17 @@ interface IGetters is IZKChainBase {
     function getProtocolVersion() external view returns (uint256);
 
     /// @return The tuple of (major, minor, patch) protocol version.
-    function getSemverProtocolVersion()
-        external
-        view
-        returns (uint32, uint32, uint32);
+    function getSemverProtocolVersion() external view returns (uint32, uint32, uint32);
 
     /// @return The upgrade system contract transaction hash, 0 if the upgrade is not initialized
-    function getL2SystemContractsUpgradeTxHash()
-        external
-        view
-        returns (bytes32);
+    function getL2SystemContractsUpgradeTxHash() external view returns (bytes32);
 
     /// @return The L2 batch number in which the upgrade transaction was processed.
     /// @dev It is equal to 0 in the following two cases:
     /// - No upgrade transaction has ever been processed.
     /// - The upgrade transaction has been processed and the batch with such transaction has been
     /// executed (i.e. finalized).
-    function getL2SystemContractsUpgradeBatchNumber()
-        external
-        view
-        returns (uint256);
+    function getL2SystemContractsUpgradeBatchNumber() external view returns (uint256);
 
     /// @return The maximum number of L2 gas that a user can request for L1 -> L2 transactions
     function getPriorityTxMaxGasLimit() external view returns (uint256);
@@ -137,25 +127,16 @@ interface IGetters is IZKChainBase {
     /// @return Whether a withdrawal has been finalized.
     /// @param _l2BatchNumber The L2 batch number within which the withdrawal happened.
     /// @param _l2MessageIndex The index of the L2->L1 message denoting the withdrawal.
-    function isEthWithdrawalFinalized(
-        uint256 _l2BatchNumber,
-        uint256 _l2MessageIndex
-    ) external view returns (bool);
+    function isEthWithdrawalFinalized(uint256 _l2BatchNumber, uint256 _l2MessageIndex) external view returns (bool);
 
     /// @return The pubdata pricing mode.
     function getPubdataPricingMode() external view returns (PubdataPricingMode);
 
     /// @return the baseTokenGasPriceMultiplierNominator, used to compare the baseTokenPrice to ether for L1->L2 transactions
-    function baseTokenGasPriceMultiplierNominator()
-        external
-        view
-        returns (uint128);
+    function baseTokenGasPriceMultiplierNominator() external view returns (uint128);
 
     /// @return the baseTokenGasPriceMultiplierDenominator, used to compare the baseTokenPrice to ether for L1->L2 transactions
-    function baseTokenGasPriceMultiplierDenominator()
-        external
-        view
-        returns (uint128);
+    function baseTokenGasPriceMultiplierDenominator() external view returns (uint128);
 
     /*//////////////////////////////////////////////////////////////
                             DIAMOND LOUPE
@@ -173,25 +154,19 @@ interface IGetters is IZKChainBase {
     function facets() external view returns (Facet[] memory);
 
     /// @return NON-sorted array with function selectors supported by a specific facet
-    function facetFunctionSelectors(
-        address _facet
-    ) external view returns (bytes4[] memory);
+    function facetFunctionSelectors(address _facet) external view returns (bytes4[] memory);
 
     /// @return facets NON-sorted array of facet addresses supported on diamond
     function facetAddresses() external view returns (address[] memory facets);
 
     /// @return facet The facet address associated with a selector. Zero if the selector is not added to the diamond
-    function facetAddress(
-        bytes4 _selector
-    ) external view returns (address facet);
+    function facetAddress(bytes4 _selector) external view returns (address facet);
 
     /// @return Whether the selector can be frozen by the admin or always accessible
     function isFunctionFreezable(bytes4 _selector) external view returns (bool);
 
     /// @return isFreezable Whether the facet can be frozen by the admin or always accessible
-    function isFacetFreezable(
-        address _facet
-    ) external view returns (bool isFreezable);
+    function isFacetFreezable(address _facet) external view returns (bool isFreezable);
 
     /// @return The address of the current settlement layer.
     function getSettlementLayer() external view returns (address);

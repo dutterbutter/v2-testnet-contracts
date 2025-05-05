@@ -1,25 +1,18 @@
 # ZKsync Contracts
 
-[![Logo](https://raw.githubusercontent.com/matter-labs/v2-testnet-contracts/beta/logo.svg)](https://zksync.io)
+# <img src="logo.svg" alt="ZKsync Logo" />
 
 > [!WARNING]
-> This project is provided on the best effort basis and might not accurately reflect contracts that are deployed on any particular ZK chain. Proper source of truth is still [era-contracts](https://github.com/matter-labs/era-contracts)
+> This project is provided on the best effort basis and might not accurately reflect contracts that are deployed on any particular ZK chain. Proper source of truth is still [era-contracts](https://github.com/matter-labs/era-contracts).
 
 This package contains lightweight subset of ZKsync L1, L2 and system contracts that we consider to be publicly facing. For more details see [era-contracts](https://github.com/matter-labs/era-contracts).
 
-
 > [!IMPORTANT]
-> Current contract snapshot was made for protocol version 26 as taken from commit [6badcb8a9b6114c6dd10d3b172a96812250604b0](https://github.com/matter-labs/era-contracts/commit/6badcb8a9b6114c6dd10d3b172a96812250604b0)
+> Current contract snapshot was made for protocol version 27 as taken from commit [90769297e5324b8c9cfaa10eaf146816ad8dcc8b](https://github.com/matter-labs/era-contracts/commit/90769297e5324b8c9cfaa10eaf146816ad8dcc8b)
 
 ## Installation
 
-### Hardhat
-
-```bash
-yarn add @matterlabs/zksync-contracts@beta
-```
-
-### Foundry
+To install with [**Foundry-ZKsync**](https://github.com/matter-labs/foundry-zksync):
 
 ```bash
 forge install matter-labs/v2-testnet-contracts@beta
@@ -29,6 +22,12 @@ Add the following to the `remappings.txt` file of your project:
 
 ```txt
 @matterlabs/zksync-contracts/=lib/v2-testnet-contracts/
+```
+
+To install with [**Hardhat**](https://github.com/matter-labs/hardhat-zksync):
+
+```bash
+yarn add @matterlabs/zksync-contracts@beta
 ```
 
 ## Usage
@@ -44,7 +43,22 @@ contract MyPaymaster is IPaymaster {
 }
 ```
 
-You can find a lot of useful examples in the [ZKsync docs](https://docs.zksync.io).
+## Documentation  
+
+Resources for understanding and working with ZKsync contracts:
+
+- **[Core Overview](https://matter-labs.github.io/zksync-era/core/latest/index.html)** – High-level insights into ZKsync’s architecture and core concepts.  
+- **[Foundry-ZKsync Book](https://foundry-book.zksync.io/)** – A comprehensive guide to using Foundry with ZKsync.  
+- **[Official Documentation](https://docs.zksync.io/)** – The primary reference for developers building on ZKsync.  
+- **[Era Contracts Repo Docs](https://github.com/matter-labs/era-contracts/blob/main/docs/Overview.md)** – Details on the contracts in the `era-contracts` repo.  
+
+## Contract Directories
+
+**`l1-contracts/`** — Contracts deployed on Ethereum Layer 1, responsible for rollup security, cross-chain communication, and governance.
+
+**`l2-contracts/`** — Contracts deployed on Layer 2, handling execution, transactions, and protocol logic.
+
+**`system-contracts/`** — Privileged contracts that facilitate core protocol operations, such as contract deployment, messaging, and account management.
 
 ## License
 

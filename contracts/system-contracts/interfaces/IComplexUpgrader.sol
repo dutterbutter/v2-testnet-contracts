@@ -16,8 +16,5 @@ interface IComplexUpgrader {
         bytes calldata _calldata
     ) external payable;
 
-    function upgrade(
-        address _delegateTo,
-        bytes calldata _calldata
-    ) external payable;
+    function upgrade(address _delegateTo, bytes calldata _calldata) external payable;
 }

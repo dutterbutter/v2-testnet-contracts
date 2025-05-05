@@ -8,19 +8,12 @@ import {UpgradeableBeacon} from "@openzeppelin/contracts/proxy/beacon/Upgradeabl
 /// @custom:security-contact security@matterlabs.dev
 interface IL2SharedBridgeLegacy {
     event FinalizeDeposit(
-        address indexed l1Sender,
-        address indexed l2Receiver,
-        address indexed l2Token,
-        uint256 amount
+        address indexed l1Sender, address indexed l2Receiver, address indexed l2Token, uint256 amount
     );
 
     function l2TokenBeacon() external view returns (UpgradeableBeacon);
 
-    function withdraw(
-        address _l1Receiver,
-        address _l2Token,
-        uint256 _amount
-    ) external;
+    function withdraw(address _l1Receiver, address _l2Token, uint256 _amount) external;
 
     function l1TokenAddress(address _l2Token) external view returns (address);
 

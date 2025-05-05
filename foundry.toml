@@ -8,7 +8,10 @@ out                  = "out"
 cache_path           = "cache_forge"
 libs                 = ["lib", "dependencies"]
 
-[profile.default.zksync]
+## @devs should use if working with EraVM contracts using foundry-zksync
+## EVM contracts using EVM interpreter from V27 protocol upgrade does not
+## require this profile
+[profile.zksync]
 src              = "contracts"
 out              = "zkout"
 libs             = ["lib", "dependencies"]
