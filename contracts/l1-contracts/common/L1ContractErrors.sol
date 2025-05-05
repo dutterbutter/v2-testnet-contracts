@@ -17,8 +17,6 @@ error CallNotAllowed(bytes call);
 error RemovingPermanentRestriction();
 // 0xfcb9b2e1
 error UnallowedImplementation(bytes32 implementationHash);
-// 0x1ff9d522
-error AddressAlreadyUsed(address addr);
 // 0x0dfb42bf
 error AddressAlreadySet(address addr);
 // 0x86bb51b8
@@ -44,10 +42,7 @@ error BatchHashMismatch(bytes32 expected, bytes32 actual);
 // 0x2078a6a0
 error BatchNotExecuted(uint256 batchNumber);
 // 0xbd4455ff
-error BatchNumberMismatch(
-    uint256 expectedBatchNumber,
-    uint256 providedBatchNumber
-);
+error BatchNumberMismatch(uint256 expectedBatchNumber, uint256 providedBatchNumber);
 // 0x6cf12312
 error BridgeHubAlreadyRegistered();
 // 0xdb538614
@@ -123,32 +118,19 @@ error InvalidDelay();
 // 0xc1780bd6
 error InvalidLogSender(address sender, uint256 logKey);
 // 0xd8e9405c
-error InvalidNumberOfBlobs(
-    uint256 expected,
-    uint256 numCommitments,
-    uint256 numHashes
-);
+error InvalidNumberOfBlobs(uint256 expected, uint256 numCommitments, uint256 numHashes);
 // 0x09bde339
 error InvalidProof();
 // 0x5428eae7
 error InvalidProtocolVersion();
-// 0x5513177c
-error InvalidPubdataHash(bytes32 expectedHash, bytes32 provided);
 // 0x6f1cf752
 error InvalidPubdataPricingMode();
 // 0x12ba286f
 error InvalidSelector(bytes4 func);
-// 0x5cb29523
-error InvalidTxType(uint256 txType);
 // 0x0214acb6
 error InvalidUpgradeTxn(UpgradeTxVerifyParam);
 // 0xfb5c22e6
 error L2TimestampTooBig();
-// 0xd2c011d6
-error L2UpgradeNonceNotEqualToNewProtocolVersion(
-    uint256 nonce,
-    uint256 protocolVersion
-);
 // 0x97e1359e
 error L2WithdrawalMessageWrongLength(uint256 messageLen);
 // 0xe37d2c02
@@ -171,8 +153,6 @@ error MissingSystemLogs(uint256 expected, uint256 actual);
 error MsgValueMismatch(uint256 expectedMsgValue, uint256 providedMsgValue);
 // 0xb385a3da
 error MsgValueTooLow(uint256 required, uint256 provided);
-// 0x72ea85ad
-error NewProtocolMajorVersionNotZero();
 // 0x79cc2d22
 error NoCallsProvided();
 // 0xa6fef710
@@ -189,8 +169,6 @@ error NonIncreasingTimestamp();
 error NonSequentialBatch();
 // 0x0ac76f01
 error NonSequentialVersion();
-// 0xdd629f86
-error NotEnoughGas();
 // 0xdd7e3621
 error NotInitializedReentrancyGuard();
 // 0xdf17e316
@@ -205,37 +183,16 @@ error OperationMustBePending();
 error OperationMustBeReady();
 // 0xb926450e
 error OriginChainIdNotFound();
-// 0xd7f50a9d
-error PatchCantSetUpgradeTxn();
-// 0x962fd7d0
-error PatchUpgradeCantSetBootloader();
-// 0x559cc34e
-error PatchUpgradeCantSetDefaultAccount();
 // 0x9b48e060
 error PreviousOperationNotExecuted();
-// 0x5c598b60
-error PreviousProtocolMajorVersionNotZero();
-// 0xa0f47245
-error PreviousUpgradeNotCleaned();
-// 0x101ba748
-error PreviousUpgradeNotFinalized(bytes32 txHash);
 // 0xd5a99014
 error PriorityOperationsRollingHashMismatch();
 // 0x1a4d284a
 error PriorityTxPubdataExceedsMaxPubDataPerBatch();
 // 0xa461f651
-error ProtocolIdMismatch(
-    uint256 expectedProtocolVersion,
-    uint256 providedProtocolId
-);
+error ProtocolIdMismatch(uint256 expectedProtocolVersion, uint256 providedProtocolId);
 // 0x64f94ec2
 error ProtocolIdNotGreater();
-// 0xd328c12a
-error ProtocolVersionMinorDeltaTooBig(uint256 limit, uint256 proposed);
-// 0x88d7b498
-error ProtocolVersionTooSmall();
-// 0x53dee67b
-error PubdataCommitmentsEmpty();
 // 0x959f26fb
 error PubdataGreaterThanLimit(uint256 limit, uint256 length);
 // 0x63c36549
@@ -318,10 +275,7 @@ error UnsupportedProofBatchEncoding(uint8 version);
 error UnsupportedExecuteBatchEncoding(uint8 version);
 // 0xd7d93e1f
 error IncorrectBatchBounds(
-    uint256 processFromExpected,
-    uint256 processToExpected,
-    uint256 processFromProvided,
-    uint256 processToProvided
+    uint256 processFromExpected, uint256 processToExpected, uint256 processFromProvided, uint256 processToProvided
 );
 // 0x64107968
 error AssetHandlerNotRegistered(bytes32 assetId);
@@ -343,8 +297,6 @@ error NewDeadlineExceedsMaxDeadline();
 error AlreadyPermanentRollup();
 // 0x92daded2
 error InvalidDAForPermanentRollup();
-// 0xd0266e26
-error NotSettlementLayer();
 // 0x7a4902ad
 error TimerAlreadyStarted();
 
@@ -373,8 +325,6 @@ error TokenNotLegacy();
 error IncorrectTokenAddressFromNTV(bytes32 assetId, address tokenAddress);
 // 0x48c5fa28
 error InvalidProofLengthForFinalNode();
-// 0x7acd7817
-error TokenIsNotLegacy();
 // 0xfade089a
 error LegacyEncodingUsedForNonL1Token();
 // 0xa51fa558
@@ -404,6 +354,10 @@ error InvalidSystemLogsLength();
 error LegacyBridgeNotSet();
 // 0x767eed08
 error LegacyMethodForNonL1Token();
+// 0xc352bb73
+error UnknownVerifierType();
+// 0x456f8f7a
+error EmptyProofLength();
 
 enum SharedBridgeKey {
     PostUpgradeFirstBatch,

@@ -11,9 +11,7 @@ bytes32 constant EMPTY_STRING_KECCAK = 0xc5d2460186f7233c927e7db2dcc703c0e500b65
 uint256 constant L2_TO_L1_LOG_SERIALIZE_SIZE = 88;
 
 /// @dev The maximum length of the bytes array with L2 -> L1 logs
-uint256 constant MAX_L2_TO_L1_LOGS_COMMITMENT_BYTES = 4 +
-    L2_TO_L1_LOG_SERIALIZE_SIZE *
-    512;
+uint256 constant MAX_L2_TO_L1_LOGS_COMMITMENT_BYTES = 4 + L2_TO_L1_LOG_SERIALIZE_SIZE * 512;
 
 /// @dev The value of default leaf hash for L2 -> L1 logs Merkle tree
 /// @dev An incomplete fixed-size tree is filled with this value to be a full binary tree
@@ -107,14 +105,10 @@ uint256 constant PRIORITY_TX_MAX_GAS_LIMIT = 72_000_000;
 address constant ETH_TOKEN_ADDRESS = address(1);
 
 /// @dev the value returned in bridgehubDeposit in the TwoBridges function.
-bytes32 constant TWO_BRIDGES_MAGIC_VALUE = bytes32(
-    uint256(keccak256("TWO_BRIDGES_MAGIC_VALUE")) - 1
-);
+bytes32 constant TWO_BRIDGES_MAGIC_VALUE = bytes32(uint256(keccak256("TWO_BRIDGES_MAGIC_VALUE")) - 1);
 
 /// @dev https://eips.ethereum.org/EIPS/eip-1352
-address constant BRIDGEHUB_MIN_SECOND_BRIDGE_ADDRESS = address(
-    uint160(type(uint16).max)
-);
+address constant BRIDGEHUB_MIN_SECOND_BRIDGE_ADDRESS = address(uint160(type(uint16).max));
 
 /// @dev the maximum number of supported chains, this is an arbitrary limit.
 /// @dev Note, that in case of a malicious Bridgehub admin, the total number of chains
@@ -124,17 +118,14 @@ address constant BRIDGEHUB_MIN_SECOND_BRIDGE_ADDRESS = address(
 uint256 constant MAX_NUMBER_OF_ZK_CHAINS = 100;
 
 /// @dev Used as the `msg.sender` for transactions that relayed via a settlement layer.
-address constant SETTLEMENT_LAYER_RELAY_SENDER = address(
-    uint160(0x1111111111111111111111111111111111111111)
-);
+address constant SETTLEMENT_LAYER_RELAY_SENDER = address(uint160(0x1111111111111111111111111111111111111111));
 
 /// @dev The metadata version that is supported by the ZK Chains to prove that an L2->L1 log was included in a batch.
 uint256 constant SUPPORTED_PROOF_METADATA_VERSION = 1;
 
 /// @dev The virtual address of the L1 settlement layer.
-address constant L1_SETTLEMENT_LAYER_VIRTUAL_ADDRESS = address(
-    uint160(uint256(keccak256("L1_SETTLEMENT_LAYER_VIRTUAL_ADDRESS")) - 1)
-);
+address constant L1_SETTLEMENT_LAYER_VIRTUAL_ADDRESS =
+    address(uint160(uint256(keccak256("L1_SETTLEMENT_LAYER_VIRTUAL_ADDRESS")) - 1));
 
 struct PriorityTreeCommitment {
     uint256 nextLeafIndex;
@@ -169,3 +160,6 @@ struct ZKChainCommitment {
     /// @notice Whether a chain is a permanent rollup.
     bool isPermanentRollup;
 }
+
+/// @dev Used as the `msg.sender` for system service transactions.
+address constant SERVICE_TRANSACTION_SENDER = address(uint160(0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF));

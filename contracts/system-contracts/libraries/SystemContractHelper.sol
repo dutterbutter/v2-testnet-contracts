@@ -2,11 +2,42 @@
 // We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
 pragma solidity ^0.8.0;
 
-import {MAX_SYSTEM_CONTRACT_ADDRESS, DEPLOYER_SYSTEM_CONTRACT, FORCE_DEPLOYER, KNOWN_CODE_STORAGE_CONTRACT, SLOAD_CONTRACT_ADDRESS} from "../Constants.sol";
+import {
+    MAX_SYSTEM_CONTRACT_ADDRESS,
+    ACCOUNT_CODE_STORAGE_SYSTEM_CONTRACT,
+    DEPLOYER_SYSTEM_CONTRACT,
+    FORCE_DEPLOYER,
+    KNOWN_CODE_STORAGE_CONTRACT,
+    SLOAD_CONTRACT_ADDRESS
+} from "../Constants.sol";
 import {ForceDeployment, IContractDeployer} from "../interfaces/IContractDeployer.sol";
 
-import {CalldataForwardingMode, SystemContractsCaller, MIMIC_CALL_CALL_ADDRESS, CALLFLAGS_CALL_ADDRESS, CODE_ADDRESS_CALL_ADDRESS, EVENT_WRITE_ADDRESS, EVENT_INITIALIZE_ADDRESS, GET_EXTRA_ABI_DATA_ADDRESS, LOAD_CALLDATA_INTO_ACTIVE_PTR_CALL_ADDRESS, META_CODE_SHARD_ID_OFFSET, META_CALLER_SHARD_ID_OFFSET, META_SHARD_ID_OFFSET, META_AUX_HEAP_SIZE_OFFSET, META_HEAP_SIZE_OFFSET, META_PUBDATA_PUBLISHED_OFFSET, META_CALL_ADDRESS, PTR_CALLDATA_CALL_ADDRESS, PTR_ADD_INTO_ACTIVE_CALL_ADDRESS, PTR_SHRINK_INTO_ACTIVE_CALL_ADDRESS, PTR_PACK_INTO_ACTIVE_CALL_ADDRESS, PRECOMPILE_CALL_ADDRESS, SET_CONTEXT_VALUE_CALL_ADDRESS, TO_L1_CALL_ADDRESS} from "./SystemContractsCaller.sol";
-import {IndexOutOfBounds, FailedToChargeGas, SloadContractBytecodeUnknown, PreviousBytecodeUnknown} from "../SystemContractErrors.sol";
+import {
+    CalldataForwardingMode,
+    SystemContractsCaller,
+    MIMIC_CALL_CALL_ADDRESS,
+    CALLFLAGS_CALL_ADDRESS,
+    CODE_ADDRESS_CALL_ADDRESS,
+    EVENT_WRITE_ADDRESS,
+    EVENT_INITIALIZE_ADDRESS,
+    GET_EXTRA_ABI_DATA_ADDRESS,
+    LOAD_CALLDATA_INTO_ACTIVE_PTR_CALL_ADDRESS,
+    META_CODE_SHARD_ID_OFFSET,
+    META_CALLER_SHARD_ID_OFFSET,
+    META_SHARD_ID_OFFSET,
+    META_AUX_HEAP_SIZE_OFFSET,
+    META_HEAP_SIZE_OFFSET,
+    META_PUBDATA_PUBLISHED_OFFSET,
+    META_CALL_ADDRESS,
+    PTR_CALLDATA_CALL_ADDRESS,
+    PTR_ADD_INTO_ACTIVE_CALL_ADDRESS,
+    PTR_SHRINK_INTO_ACTIVE_CALL_ADDRESS,
+    PTR_PACK_INTO_ACTIVE_CALL_ADDRESS,
+    PRECOMPILE_CALL_ADDRESS,
+    SET_CONTEXT_VALUE_CALL_ADDRESS,
+    TO_L1_CALL_ADDRESS
+} from "./SystemContractsCaller.sol";
+import {IndexOutOfBounds, FailedToChargeGas, PreviousBytecodeUnknown} from "../SystemContractErrors.sol";
 
 uint256 constant UINT32_MASK = type(uint32).max;
 uint256 constant UINT64_MASK = type(uint64).max;
@@ -149,11 +180,11 @@ library SystemContractHelper {
     /// system contracts corresponding to the list of precompiles above can do `precompileCall`.
     /// @dev If used not in the `sha256`, `keccak256` or `ecrecover` contracts, it will just burn the gas provided.
     /// @dev This method is `unsafe` because it does not check whether there is enough gas to burn.
-    function unsafePrecompileCall(
-        uint256 _rawParams,
-        uint32 _gasToBurn,
-        uint32 _pubdataToSpend
-    ) internal view returns (bool success) {
+    function unsafePrecompileCall(uint256 _rawParams, uint32 _gasToBurn, uint32 _pubdataToSpend)
+        internal
+        view
+        returns (bool success)
+    {
         address callAddr = PRECOMPILE_CALL_ADDRESS;
 
         uint256 params = uint256(_gasToBurn) + (uint256(_pubdataToSpend) << 32);
@@ -346,6 +377,13 @@ library SystemContractHelper {
         return uint160(_address) <= uint160(MAX_SYSTEM_CONTRACT_ADDRESS);
     }
 
+    /// @notice Returns whether the current call is a system call from EVM emulator.
+    /// @return `true` or `false` based on whether the current call is a system call from EVM emulator.
+    function isSystemCallFromEvmEmulator() internal view returns (bool) {
+        if (!isSystemCall()) return false;
+        return ACCOUNT_CODE_STORAGE_SYSTEM_CONTRACT.isAccountEVM(msg.sender);
+    }
+
     /// @notice Method used for burning a certain amount of gas.
     /// @param _gasToPay The number of gas to burn.
     /// @param _pubdataToSpend The number of pubdata bytes to burn during the call.
@@ -366,11 +404,10 @@ library SystemContractHelper {
     /// @param _data The data to pass to the call.
     /// @return success Whether the call was successful.
     /// @return returndata The return data of the call.
-    function mimicCall(
-        address _to,
-        address _whoToMimic,
-        bytes memory _data
-    ) internal returns (bool success, bytes memory returndata) {
+    function mimicCall(address _to, address _whoToMimic, bytes memory _data)
+        internal
+        returns (bool success, bytes memory returndata)
+    {
         // In zkSync, no memory-related values can exceed uint32, so it is safe to convert here
         uint32 dataStart;
         uint32 dataLength = uint32(_data.length);

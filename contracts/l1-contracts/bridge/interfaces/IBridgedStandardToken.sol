@@ -3,12 +3,7 @@
 pragma solidity ^0.8.0;
 
 interface IBridgedStandardToken {
-    event BridgeInitialize(
-        address indexed l1Token,
-        string name,
-        string symbol,
-        uint8 decimals
-    );
+    event BridgeInitialize(address indexed l1Token, string name, string symbol, uint8 decimals);
 
     event BridgeMint(address indexed account, uint256 amount);
 

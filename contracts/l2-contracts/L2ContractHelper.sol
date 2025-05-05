@@ -18,7 +18,7 @@ import {MalformedBytecode, BytecodeError} from "./errors/L2ContractErrors.sol";
  * - The contract on L1 accepts all sent messages and if the message came from this system contract
  * it requires that the preimage of `value` be provided.
  */
-interface IL2Messenger {
+interface IL1Messenger {
     /// @notice Sends an arbitrary length message to L1.
     /// @param _message The variable length message to be sent to L1.
     /// @return Returns the keccak256 hashed value of the message.
@@ -47,19 +47,13 @@ interface IContractDeployer {
 
     /// @notice This method is to be used only during an upgrade to set bytecodes on specific addresses.
     /// @param _deployParams A set of parameters describing force deployment.
-    function forceDeployOnAddresses(
-        ForceDeployment[] calldata _deployParams
-    ) external payable;
+    function forceDeployOnAddresses(ForceDeployment[] calldata _deployParams) external payable;
 
     /// @notice Creates a new contract at a determined address using the `CREATE2` salt on L2
     /// @param _salt a unique value to create the deterministic address of the new contract
     /// @param _bytecodeHash the bytecodehash of the new contract to be deployed
     /// @param _input the calldata to be sent to the constructor of the new contract
-    function create2(
-        bytes32 _salt,
-        bytes32 _bytecodeHash,
-        bytes calldata _input
-    ) external returns (address);
+    function create2(bytes32 _salt, bytes32 _bytecodeHash, bytes calldata _input) external returns (address);
 
     /// @notice Calculates the address of a create2 contract deployment
     /// @param _sender The address of the sender.
@@ -67,12 +61,10 @@ interface IContractDeployer {
     /// @param _salt a unique value to create the deterministic address of the new contract
     /// @param _input the calldata to be sent to the constructor of the new contract
     /// @return newAddress The derived address of the account.
-    function getNewAddressCreate2(
-        address _sender,
-        bytes32 _bytecodeHash,
-        bytes32 _salt,
-        bytes calldata _input
-    ) external view returns (address newAddress);
+    function getNewAddressCreate2(address _sender, bytes32 _bytecodeHash, bytes32 _salt, bytes calldata _input)
+        external
+        view
+        returns (address newAddress);
 }
 
 /**
@@ -84,10 +76,7 @@ interface IBaseToken {
     /// @notice Allows the withdrawal of ETH to a given L1 receiver along with an additional message.
     /// @param _l1Receiver The address on L1 to receive the withdrawn ETH.
     /// @param _additionalData Additional message or data to be sent alongside the withdrawal.
-    function withdrawWithMessage(
-        address _l1Receiver,
-        bytes memory _additionalData
-    ) external payable;
+    function withdrawWithMessage(address _l1Receiver, bytes memory _additionalData) external payable;
 }
 
 /**
@@ -119,9 +108,7 @@ interface IPubdataChunkPublisher {
     /// @notice Chunks pubdata into pieces that can fit into blobs.
     /// @param _pubdata The total l2 to l1 pubdata that will be sent via L1 blobs.
     /// @dev Note: This is an early implementation, in the future we plan to support up to 16 blobs per l1 batch.
-    function chunkPubdataToBlobs(
-        bytes calldata _pubdata
-    ) external pure returns (bytes32[] memory blobLinearHashes);
+    function chunkPubdataToBlobs(bytes calldata _pubdata) external pure returns (bytes32[] memory blobLinearHashes);
 }
 
 uint160 constant SYSTEM_CONTRACTS_OFFSET = 0x8000; // 2^15
@@ -130,32 +117,21 @@ uint160 constant SYSTEM_CONTRACTS_OFFSET = 0x8000; // 2^15
 uint160 constant USER_CONTRACTS_OFFSET = 0x10000; // 2^16
 
 address constant BOOTLOADER_ADDRESS = address(SYSTEM_CONTRACTS_OFFSET + 0x01);
-address constant MSG_VALUE_SYSTEM_CONTRACT = address(
-    SYSTEM_CONTRACTS_OFFSET + 0x09
-);
-address constant DEPLOYER_SYSTEM_CONTRACT = address(
-    SYSTEM_CONTRACTS_OFFSET + 0x06
-);
+address constant MSG_VALUE_SYSTEM_CONTRACT = address(SYSTEM_CONTRACTS_OFFSET + 0x09);
+address constant DEPLOYER_SYSTEM_CONTRACT = address(SYSTEM_CONTRACTS_OFFSET + 0x06);
 
 address constant L2_BRIDGEHUB_ADDRESS = address(USER_CONTRACTS_OFFSET + 0x02);
 
 uint256 constant L1_CHAIN_ID = 1;
 
-IL2Messenger constant L2_MESSENGER = IL2Messenger(
-    address(SYSTEM_CONTRACTS_OFFSET + 0x08)
-);
+IL1Messenger constant L2_MESSENGER = IL1Messenger(address(SYSTEM_CONTRACTS_OFFSET + 0x08));
 
-IBaseToken constant L2_BASE_TOKEN_ADDRESS = IBaseToken(
-    address(SYSTEM_CONTRACTS_OFFSET + 0x0a)
-);
+IBaseToken constant L2_BASE_TOKEN_ADDRESS = IBaseToken(address(SYSTEM_CONTRACTS_OFFSET + 0x0a));
 
-ICompressor constant COMPRESSOR_CONTRACT = ICompressor(
-    address(SYSTEM_CONTRACTS_OFFSET + 0x0e)
-);
+ICompressor constant COMPRESSOR_CONTRACT = ICompressor(address(SYSTEM_CONTRACTS_OFFSET + 0x0e));
 
-IPubdataChunkPublisher constant PUBDATA_CHUNK_PUBLISHER = IPubdataChunkPublisher(
-    address(SYSTEM_CONTRACTS_OFFSET + 0x11)
-);
+IPubdataChunkPublisher constant PUBDATA_CHUNK_PUBLISHER =
+    IPubdataChunkPublisher(address(SYSTEM_CONTRACTS_OFFSET + 0x11));
 
 /**
  * @author Matter Labs
@@ -180,12 +156,11 @@ library L2ContractHelper {
     /// @param _constructorInputHash The keccak256 hash of the constructor input data.
     /// @return The create2 address of the contract.
     /// NOTE: L2 create2 derivation is different from L1 derivation!
-    function computeCreate2Address(
-        address _sender,
-        bytes32 _salt,
-        bytes32 _bytecodeHash,
-        bytes32 _constructorInputHash
-    ) internal pure returns (address) {
+    function computeCreate2Address(address _sender, bytes32 _salt, bytes32 _bytecodeHash, bytes32 _constructorInputHash)
+        internal
+        pure
+        returns (address)
+    {
         bytes32 senderBytes = bytes32(uint256(uint160(_sender)));
         bytes32 data = keccak256(
             // solhint-disable-next-line func-named-parameters
@@ -218,8 +193,7 @@ library L2ContractHelper {
             revert MalformedBytecode(BytecodeError.WordsMustBeOdd);
         }
         hashedBytecode =
-            EfficientCall.sha(_bytecode) &
-            0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
+            EfficientCall.sha(_bytecode) & 0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
         // Setting the version of the hash
         hashedBytecode = (hashedBytecode | bytes32(uint256(1 << 248)));
         // Setting the length

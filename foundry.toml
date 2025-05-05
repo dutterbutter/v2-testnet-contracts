@@ -7,12 +7,3 @@ src                  = "contracts"
 out                  = "out"
 cache_path           = "cache_forge"
 libs                 = ["lib"]
-
-[profile.default.zksync]
-src              = "contracts"
-out              = "zkout"
-libs             = ["lib"]
-compile          = true
-startup          = true
-optimizer        = true
-optimizer_mode   = "3"

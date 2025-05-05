@@ -50,10 +50,7 @@ library DynamicIncrementalMerkle {
      * IMPORTANT: The zero value should be carefully chosen since it will be stored in the tree representing
      * empty leaves. It should be a value that is not expected to be part of the tree.
      */
-    function setup(
-        Bytes32PushTree storage self,
-        bytes32 zero
-    ) internal returns (bytes32 initialRoot) {
+    function setup(Bytes32PushTree storage self, bytes32 zero) internal returns (bytes32 initialRoot) {
         self._nextLeafIndex = 0;
         self._zeros.push(zero);
         self._sides.push(bytes32(0));
@@ -66,10 +63,7 @@ library DynamicIncrementalMerkle {
      * @param zero The value that represents an empty leaf.
      * @return initialRoot The initial root of the tree.
      */
-    function reset(
-        Bytes32PushTree storage self,
-        bytes32 zero
-    ) internal returns (bytes32 initialRoot) {
+    function reset(Bytes32PushTree storage self, bytes32 zero) internal returns (bytes32 initialRoot) {
         self._nextLeafIndex = 0;
         uint256 length = self._zeros.length;
         for (uint256 i = length; 0 < i; --i) {
@@ -91,10 +85,7 @@ library DynamicIncrementalMerkle {
      * Hashing the leaf before calling this function is recommended as a protection against
      * second pre-image attacks.
      */
-    function push(
-        Bytes32PushTree storage self,
-        bytes32 leaf
-    ) internal returns (uint256 index, bytes32 newRoot) {
+    function push(Bytes32PushTree storage self, bytes32 leaf) internal returns (uint256 index, bytes32 newRoot) {
         // Cache read
         uint256 levels = self._zeros.length - 1;
 
@@ -128,12 +119,8 @@ library DynamicIncrementalMerkle {
             // Compute the current node hash by using the hash function
             // with either its sibling (side) or the zero value for that level.
             currentLevelHash = Merkle.efficientHash(
-                isLeft
-                    ? currentLevelHash
-                    : Arrays.unsafeAccess(self._sides, i).value,
-                isLeft
-                    ? Arrays.unsafeAccess(self._zeros, i).value
-                    : currentLevelHash
+                isLeft ? currentLevelHash : Arrays.unsafeAccess(self._sides, i).value,
+                isLeft ? Arrays.unsafeAccess(self._zeros, i).value : currentLevelHash
             );
 
             // Update node index
@@ -147,18 +134,14 @@ library DynamicIncrementalMerkle {
     /**
      * @dev Tree's root.
      */
-    function root(
-        Bytes32PushTree storage self
-    ) internal view returns (bytes32) {
+    function root(Bytes32PushTree storage self) internal view returns (bytes32) {
         return Arrays.unsafeAccess(self._sides, self._sides.length - 1).value;
     }
 
     /**
      * @dev Tree's height (does not include the root node).
      */
-    function height(
-        Bytes32PushTree storage self
-    ) internal view returns (uint256) {
+    function height(Bytes32PushTree storage self) internal view returns (uint256) {
         return self._sides.length - 1;
     }
 }

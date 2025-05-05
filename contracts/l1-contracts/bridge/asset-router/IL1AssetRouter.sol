@@ -7,6 +7,7 @@ import {INativeTokenVault} from "../ntv/INativeTokenVault.sol";
 import {IAssetRouterBase} from "./IAssetRouterBase.sol";
 import {L2TransactionRequestTwoBridgesInner} from "../../bridgehub/IBridgehub.sol";
 import {IL1SharedBridgeLegacy} from "../interfaces/IL1SharedBridgeLegacy.sol";
+import {IL1ERC20Bridge} from "../interfaces/IL1ERC20Bridge.sol";
 
 /// @title L1 Bridge contract interface
 /// @author Matter Labs
@@ -15,21 +16,13 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
     event BridgehubMintData(bytes bridgeMintData);
 
     event BridgehubDepositFinalized(
-        uint256 indexed chainId,
-        bytes32 indexed txDataHash,
-        bytes32 indexed l2DepositTxHash
+        uint256 indexed chainId, bytes32 indexed txDataHash, bytes32 indexed l2DepositTxHash
     );
 
-    event ClaimedFailedDepositAssetRouter(
-        uint256 indexed chainId,
-        bytes32 indexed assetId,
-        bytes assetData
-    );
+    event ClaimedFailedDepositAssetRouter(uint256 indexed chainId, bytes32 indexed assetId, bytes assetData);
 
     event AssetDeploymentTrackerSet(
-        bytes32 indexed assetId,
-        address indexed assetDeploymentTracker,
-        bytes32 indexed additionalData
+        bytes32 indexed assetId, address indexed assetDeploymentTracker, bytes32 indexed additionalData
     );
 
     event LegacyDepositInitiated(
@@ -82,12 +75,11 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
 
     function nativeTokenVault() external view returns (INativeTokenVault);
 
-    function setAssetDeploymentTracker(
-        bytes32 _assetRegistrationData,
-        address _assetDeploymentTracker
-    ) external;
+    function setAssetDeploymentTracker(bytes32 _assetRegistrationData, address _assetDeploymentTracker) external;
 
     function setNativeTokenVault(INativeTokenVault _nativeTokenVault) external;
+
+    function setL1Erc20Bridge(IL1ERC20Bridge _legacyBridge) external;
 
     /// @notice Withdraw funds from the initiated deposit, that failed when finalizing on L2.
     /// @param _chainId The ZK chain id to which the deposit was initiated.
@@ -129,11 +121,7 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
     /// @dev assetId is not the padded address, but the correct encoded id (NTV stores respective format for IDs)
     /// @param _amount The asset amount to be transferred to native token vault.
     /// @param _originalCaller The `msg.sender` address from the external call that initiated current one.
-    function transferFundsToNTV(
-        bytes32 _assetId,
-        uint256 _amount,
-        address _originalCaller
-    ) external returns (bool);
+    function transferFundsToNTV(bytes32 _assetId, uint256 _amount, address _originalCaller) external returns (bool);
 
     /// @notice Finalize the withdrawal and release funds
     /// @param _chainId The chain ID of the transaction to check
@@ -164,12 +152,7 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
     /// for new deposits:
     /// bytes32 _assetId,
     /// bytes _transferData
-    function bridgehubDeposit(
-        uint256 _chainId,
-        address _originalCaller,
-        uint256 _value,
-        bytes calldata _data
-    )
+    function bridgehubDeposit(uint256 _chainId, address _originalCaller, uint256 _value, bytes calldata _data)
         external
         payable
         returns (L2TransactionRequestTwoBridgesInner memory request);
@@ -180,11 +163,10 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
     /// @param _assetId The deposited asset ID.
     /// @param _assetData The encoded data, which is used by the asset handler to determine L2 recipient and amount. Might include extra information.
     /// @return Returns calldata used on ZK chain.
-    function getDepositCalldata(
-        address _sender,
-        bytes32 _assetId,
-        bytes memory _assetData
-    ) external view returns (bytes memory);
+    function getDepositCalldata(address _sender, bytes32 _assetId, bytes memory _assetData)
+        external
+        view
+        returns (bytes memory);
 
     /// @notice Allows bridgehub to acquire mintValue for L1->L2 transactions.
     /// @dev If the corresponding L2 transaction fails, refunds are issued to a refund recipient on L2.
@@ -192,12 +174,9 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
     /// @param _assetId The deposited asset ID.
     /// @param _originalCaller The `msg.sender` address from the external call that initiated current one.
     /// @param _amount The total amount of tokens to be bridged.
-    function bridgehubDepositBaseToken(
-        uint256 _chainId,
-        bytes32 _assetId,
-        address _originalCaller,
-        uint256 _amount
-    ) external payable;
+    function bridgehubDepositBaseToken(uint256 _chainId, bytes32 _assetId, address _originalCaller, uint256 _amount)
+        external
+        payable;
 
     /// @notice Routes the confirmation to nullifier for backward compatibility.
     /// @notice Confirms the acceptance of a transaction by the Mailbox, as part of the L2 transaction process within Bridgehub.
@@ -205,15 +184,10 @@ interface IL1AssetRouter is IAssetRouterBase, IL1SharedBridgeLegacy {
     /// @param _chainId The chain ID of the ZK chain to which confirm the deposit.
     /// @param _txDataHash The keccak256 hash of 0x01 || abi.encode(bytes32, bytes) to identify deposits.
     /// @param _txHash The hash of the L1->L2 transaction to confirm the deposit.
-    function bridgehubConfirmL2Transaction(
-        uint256 _chainId,
-        bytes32 _txDataHash,
-        bytes32 _txHash
-    ) external;
+    function bridgehubConfirmL2Transaction(uint256 _chainId, bytes32 _txDataHash, bytes32 _txHash) external;
 
-    function isWithdrawalFinalized(
-        uint256 _chainId,
-        uint256 _l2BatchNumber,
-        uint256 _l2MessageIndex
-    ) external view returns (bool);
+    function isWithdrawalFinalized(uint256 _chainId, uint256 _l2BatchNumber, uint256 _l2MessageIndex)
+        external
+        view
+        returns (bool);
 }

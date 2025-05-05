@@ -7,10 +7,7 @@ pragma solidity ^0.8.0;
 /// @custom:security-contact security@matterlabs.dev
 interface IPermanentRestriction {
     /// @notice Emitted when the implementation is allowed or disallowed.
-    event AdminImplementationAllowed(
-        bytes32 indexed implementationHash,
-        bool isAllowed
-    );
+    event AdminImplementationAllowed(bytes32 indexed implementationHash, bool isAllowed);
 
     /// @notice Emitted when a certain calldata is allowed or disallowed.
     event AllowedDataChanged(bytes data, bool isAllowed);

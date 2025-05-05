@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-
+// We use a floating point pragma here so it can be used within other projects that interact with the ZKsync ecosystem without using our exact pragma version.
 pragma solidity ^0.8.0;
 
 import {IBridgehub} from "../../bridgehub/IBridgehub.sol";
@@ -28,16 +28,13 @@ struct FinalizeL1DepositParams {
 /// @custom:security-contact security@matterlabs.dev
 interface IL1Nullifier {
     event BridgehubDepositFinalized(
-        uint256 indexed chainId,
-        bytes32 indexed txDataHash,
-        bytes32 indexed l2DepositTxHash
+        uint256 indexed chainId, bytes32 indexed txDataHash, bytes32 indexed l2DepositTxHash
     );
 
-    function isWithdrawalFinalized(
-        uint256 _chainId,
-        uint256 _l2BatchNumber,
-        uint256 _l2MessageIndex
-    ) external view returns (bool);
+    function isWithdrawalFinalized(uint256 _chainId, uint256 _l2BatchNumber, uint256 _l2MessageIndex)
+        external
+        view
+        returns (bool);
 
     function claimFailedDepositLegacyErc20Bridge(
         address _depositSender,
@@ -62,46 +59,29 @@ interface IL1Nullifier {
         bytes32[] calldata _merkleProof
     ) external;
 
-    function finalizeDeposit(
-        FinalizeL1DepositParams calldata _finalizeWithdrawalParams
-    ) external;
+    function finalizeDeposit(FinalizeL1DepositParams calldata _finalizeWithdrawalParams) external;
 
     function BRIDGE_HUB() external view returns (IBridgehub);
 
     function legacyBridge() external view returns (IL1ERC20Bridge);
 
-    function depositHappened(
-        uint256 _chainId,
-        bytes32 _l2TxHash
-    ) external view returns (bytes32);
+    function depositHappened(uint256 _chainId, bytes32 _l2TxHash) external view returns (bytes32);
 
-    function bridgehubConfirmL2TransactionForwarded(
-        uint256 _chainId,
-        bytes32 _txDataHash,
-        bytes32 _txHash
-    ) external;
+    function bridgehubConfirmL2TransactionForwarded(uint256 _chainId, bytes32 _txDataHash, bytes32 _txHash) external;
 
     function l1NativeTokenVault() external view returns (IL1NativeTokenVault);
 
-    function setL1NativeTokenVault(
-        IL1NativeTokenVault _nativeTokenVault
-    ) external;
+    function setL1NativeTokenVault(IL1NativeTokenVault _nativeTokenVault) external;
 
     function setL1AssetRouter(address _l1AssetRouter) external;
 
-    function chainBalance(
-        uint256 _chainId,
-        address _token
-    ) external view returns (uint256);
+    function chainBalance(uint256 _chainId, address _token) external view returns (uint256);
 
     function l2BridgeAddress(uint256 _chainId) external view returns (address);
 
     function transferTokenToNTV(address _token) external;
 
-    function nullifyChainBalanceByNTV(
-        uint256 _chainId,
-        address _token
-    ) external;
+    function nullifyChainBalanceByNTV(uint256 _chainId, address _token) external;
 
     /// @dev Withdraw funds from the initiated deposit, that failed when finalizing on L2.
     /// @param _chainId The ZK chain id to which deposit was initiated.

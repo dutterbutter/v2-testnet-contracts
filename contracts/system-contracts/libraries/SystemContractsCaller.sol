@@ -73,7 +73,10 @@ library SystemContractsCaller {
     /// @param data The calldata.
     /// @return success Whether the transaction has been successful.
     /// @dev Note, that the `isSystem` flag can only be set when calling system contracts.
-    function systemCall(uint32 gasLimit, address to, uint256 value, bytes memory data) internal returns (bool success) {
+    function systemCall(uint32 gasLimit, address to, uint256 value, bytes memory data)
+        internal
+        returns (bool success)
+    {
         address callAddr = SYSTEM_CALL_CALL_ADDRESS;
 
         uint32 dataStart;
@@ -120,12 +123,10 @@ library SystemContractsCaller {
     /// @return success Whether the transaction has been successful.
     /// @return returnData The returndata of the transaction (revert reason in case the transaction has failed).
     /// @dev Note, that the `isSystem` flag can only be set when calling system contracts.
-    function systemCallWithReturndata(
-        uint32 gasLimit,
-        address to,
-        uint128 value,
-        bytes memory data
-    ) internal returns (bool success, bytes memory returnData) {
+    function systemCallWithReturndata(uint32 gasLimit, address to, uint128 value, bytes memory data)
+        internal
+        returns (bool success, bytes memory returnData)
+    {
         success = systemCall(gasLimit, to, value, data);
 
         uint256 size;
@@ -147,12 +148,10 @@ library SystemContractsCaller {
     /// @return returnData The returndata of the transaction. In case the transaction reverts, the error
     /// bubbles up to the parent frame.
     /// @dev Note, that the `isSystem` flag can only be set when calling system contracts.
-    function systemCallWithPropagatedRevert(
-        uint32 gasLimit,
-        address to,
-        uint128 value,
-        bytes memory data
-    ) internal returns (bytes memory returnData) {
+    function systemCallWithPropagatedRevert(uint32 gasLimit, address to, uint128 value, bytes memory data)
+        internal
+        returns (bytes memory returnData)
+    {
         bool success;
         (success, returnData) = systemCallWithReturndata(gasLimit, to, value, data);
 

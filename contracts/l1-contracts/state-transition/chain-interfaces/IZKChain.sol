@@ -12,8 +12,6 @@ import {Diamond} from "../libraries/Diamond.sol";
 interface IZKChain is IAdmin, IExecutor, IGetters, IMailbox {
     // We need this structure for the server for now
     event ProposeTransparentUpgrade(
-        Diamond.DiamondCutData diamondCut,
-        uint256 indexed proposalId,
-        bytes32 proposalSalt
+        Diamond.DiamondCutData diamondCut, uint256 indexed proposalId, bytes32 proposalSalt
     );
 }

@@ -3,7 +3,14 @@
 pragma solidity ^0.8.0;
 
 import {SystemContractHelper, ADDRESS_MASK} from "./SystemContractHelper.sol";
-import {SystemContractsCaller, CalldataForwardingMode, RAW_FAR_CALL_BY_REF_CALL_ADDRESS, SYSTEM_CALL_BY_REF_CALL_ADDRESS, MSG_VALUE_SIMULATOR_IS_SYSTEM_BIT, MIMIC_CALL_BY_REF_CALL_ADDRESS} from "./SystemContractsCaller.sol";
+import {
+    SystemContractsCaller,
+    CalldataForwardingMode,
+    RAW_FAR_CALL_BY_REF_CALL_ADDRESS,
+    SYSTEM_CALL_BY_REF_CALL_ADDRESS,
+    MSG_VALUE_SIMULATOR_IS_SYSTEM_BIT,
+    MIMIC_CALL_BY_REF_CALL_ADDRESS
+} from "./SystemContractsCaller.sol";
 import {Utils} from "./Utils.sol";
 import {SHA256_SYSTEM_CONTRACT, KECCAK256_SYSTEM_CONTRACT, MSG_VALUE_SYSTEM_CONTRACT} from "../Constants.sol";
 import {Keccak256InvalidReturnData, ShaInvalidReturnData} from "../SystemContractErrors.sol";
@@ -61,13 +68,10 @@ library EfficientCall {
     /// @param _data The calldata to use for the call.
     /// @param _isSystem Whether the call should contain the `isSystem` flag.
     /// @return returnData The copied to memory return data.
-    function call(
-        uint256 _gas,
-        address _address,
-        uint256 _value,
-        bytes calldata _data,
-        bool _isSystem
-    ) internal returns (bytes memory returnData) {
+    function call(uint256 _gas, address _address, uint256 _value, bytes calldata _data, bool _isSystem)
+        internal
+        returns (bytes memory returnData)
+    {
         bool success = rawCall({_gas: _gas, _address: _address, _value: _value, _data: _data, _isSystem: _isSystem});
         returnData = _verifyCallResult(success);
     }
@@ -77,11 +81,11 @@ library EfficientCall {
     /// @param _address The address to call.
     /// @param _data The calldata to use for the call.
     /// @return returnData The copied to memory return data.
-    function staticCall(
-        uint256 _gas,
-        address _address,
-        bytes calldata _data
-    ) internal view returns (bytes memory returnData) {
+    function staticCall(uint256 _gas, address _address, bytes calldata _data)
+        internal
+        view
+        returns (bytes memory returnData)
+    {
         bool success = rawStaticCall(_gas, _address, _data);
         returnData = _verifyCallResult(success);
     }
@@ -91,11 +95,10 @@ library EfficientCall {
     /// @param _address The address to call.
     /// @param _data The calldata to use for the call.
     /// @return returnData The copied to memory return data.
-    function delegateCall(
-        uint256 _gas,
-        address _address,
-        bytes calldata _data
-    ) internal returns (bytes memory returnData) {
+    function delegateCall(uint256 _gas, address _address, bytes calldata _data)
+        internal
+        returns (bytes memory returnData)
+    {
         bool success = rawDelegateCall(_gas, _address, _data);
         returnData = _verifyCallResult(success);
     }
@@ -135,13 +138,10 @@ library EfficientCall {
     /// @param _data The calldata to use for the call.
     /// @param _isSystem Whether the call should contain the `isSystem` flag.
     /// @return success whether the call was successful.
-    function rawCall(
-        uint256 _gas,
-        address _address,
-        uint256 _value,
-        bytes calldata _data,
-        bool _isSystem
-    ) internal returns (bool success) {
+    function rawCall(uint256 _gas, address _address, uint256 _value, bytes calldata _data, bool _isSystem)
+        internal
+        returns (bool success)
+    {
         if (_value == 0) {
             _loadFarCallABIIntoActivePtr(_gas, _data, false, _isSystem);
 
@@ -256,12 +256,10 @@ library EfficientCall {
     /// @param _data The calldata to be passed to the call.
     /// @param _isConstructor Whether the call is a constructor call.
     /// @param _isSystem Whether the call is a system call.
-    function _loadFarCallABIIntoActivePtr(
-        uint256 _gas,
-        bytes calldata _data,
-        bool _isConstructor,
-        bool _isSystem
-    ) private view {
+    function _loadFarCallABIIntoActivePtr(uint256 _gas, bytes calldata _data, bool _isConstructor, bool _isSystem)
+        private
+        view
+    {
         SystemContractHelper.loadCalldataIntoActivePtr();
 
         uint256 dataOffset;

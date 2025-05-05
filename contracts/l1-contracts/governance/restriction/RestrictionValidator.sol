@@ -15,10 +15,7 @@ library RestrictionValidator {
     /// the interface completely or that it is implemented correctly. It is mainly used to
     /// ensure that invalid restrictions can not be accidentally added.
     function validateRestriction(address _restriction) internal view {
-        if (
-            IRestriction(_restriction).getSupportsRestrictionMagic() !=
-            RESTRICTION_MAGIC
-        ) {
+        if (IRestriction(_restriction).getSupportsRestrictionMagic() != RESTRICTION_MAGIC) {
             revert NotARestriction(_restriction);
         }
     }

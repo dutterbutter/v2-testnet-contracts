@@ -45,33 +45,19 @@ interface ISystemContext {
 
     function getBlockHashEVM(uint256 _block) external view returns (bytes32);
 
-    function getBatchHash(
-        uint256 _batchNumber
-    ) external view returns (bytes32 hash);
+    function getBatchHash(uint256 _batchNumber) external view returns (bytes32 hash);
 
     function getBlockNumber() external view returns (uint128);
 
     function getBlockTimestamp() external view returns (uint128);
 
-    function getBatchNumberAndTimestamp()
-        external
-        view
-        returns (uint128 blockNumber, uint128 blockTimestamp);
+    function getBatchNumberAndTimestamp() external view returns (uint128 blockNumber, uint128 blockTimestamp);
 
-    function getL2BlockNumberAndTimestamp()
-        external
-        view
-        returns (uint128 blockNumber, uint128 blockTimestamp);
+    function getL2BlockNumberAndTimestamp() external view returns (uint128 blockNumber, uint128 blockTimestamp);
 
-    function gasPerPubdataByte()
-        external
-        view
-        returns (uint256 gasPerPubdataByte);
+    function gasPerPubdataByte() external view returns (uint256 gasPerPubdataByte);
 
-    function getCurrentPubdataSpent()
-        external
-        view
-        returns (uint256 currentPubdataSpent);
+    function getCurrentPubdataSpent() external view returns (uint256 currentPubdataSpent);
 
     function setChainId(uint256 _newChainId) external;
 }

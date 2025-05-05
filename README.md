@@ -8,7 +8,7 @@
 This package contains lightweight subset of ZKsync L1, L2 and system contracts that we consider to be publicly facing. For more details see [era-contracts](https://github.com/matter-labs/era-contracts).
 
 > [!IMPORTANT]
-> Current contract snapshot was made for protocol version 26 as taken from commit [6badcb8a9b6114c6dd10d3b172a96812250604b0](https://github.com/matter-labs/era-contracts/commit/6badcb8a9b6114c6dd10d3b172a96812250604b0)
+> Current contract snapshot was made for protocol version 27 as taken from commit [90769297e5324b8c9cfaa10eaf146816ad8dcc8b](https://github.com/matter-labs/era-contracts/commit/90769297e5324b8c9cfaa10eaf146816ad8dcc8b)
 
 ## Installation
 
